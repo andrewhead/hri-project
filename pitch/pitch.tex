@@ -1,6 +1,6 @@
 % vim:ft=tex:
 %
-\documentclass[12pt]{memoir}
+\documentclass[12pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 
@@ -14,28 +14,32 @@
   Andrew Head
 \end{center}
 
-If you walk into the foyer of the Invention Lab, Berkeley's student hackerspace, you'll see dozens of failed 3D prints lined up around periphery of the entry way.
-Talk to any of the students or the staff on hand and you'll find out:
-\emph{Getting started with fabrication hardware is hard.}
-What all goes wrong?
-Well, a few different things.
-3D printing without large enough tolerances leaves movable parts stationary.
-Thin supports or sharp overhangs result in tangled spindles of ABS that fail to layer properly.
-On the laser cutter, vector cutting with too much power can set the workpiece on fire from the deadly beam of energy powering through to the material.
-With each new material and image they want to imprint, raster settings will have to be manipulated to the right power and speed to yield a setting that is both as deep as desired, but also that doesn't cause melting or charring, all at a quick enough pace to finish the workpiece fast enough to let others use the machine.
+As you enter the Invention Lab---Berkeley's student hackerspace---you'll see evidence that getting started with fabrication hardware is hard.
+Scorched cardboard sits the scrap pile from laser cutting jobs that caught on fire.
+Dozens of failed 3D prints line the foyer walls from thin supports or severe overhangs.
+% As you walk into the foyer of Berkeley's student hackerspace, you see dozens of failed 3D prints lined up along the walls.
+% These tell a solemn truth:
+% Getting started with fabrication hardware is hard.
+% 3D printing without large enough tolerances leaves movable parts stationary.
+% Thin supports or sharp overhangs result in tangled spindles of ABS that fail to layer properly.
+%When using a laser cutter, vector cutting with the power set too high lights the workpiece on fire.
+This work seeks to \textbf{improve the efficiency and effectiveness of early, exploratory interactions with fabrication machines.}
 
-Reading through the guides on use of the machine can shed light into how to properly use the laser cutter:
-there are four configurable parameters that will affect how the beam interacts with the material.
-\emph{Power} controls the intensity of the beam, \emph{speed} modulates how quickly the laser moves over the material, \emph{frequency} determines the periodicity of the beam firing at the material, and \emph{resolution} determines how close ``pixels'' of a raster are placed to each other on the material.
-The values of these are set to vary based on the material a user is working with, the speed they want to work to get done with, the depth of the marks, and how rough of a sketch they can accept for the current raster.
-But a na\"{\i}ve user is unlikely to know how to set machine parameters for a new material, or to systematically vary these parameters until a raster.
-A major failure occurs in that the hacker will likely want to use the machine long before they want to develop an accurate mental model of how the parameters impact the work to be done.
+I will focus improving the user experience of of rastering images onto arbitrary materials using a laser cutter.
+Rastering is the process of ``etching'' an image into a work piece with with a dot matrix of laser fixations.
+Four parameters---power, speed, frequency, and resolution---control the depth, speed, and fidelity of the image is rastered (Figure~\ref{fig:rasters}).
+Many values for these parameters can cause the material to scorch.
 
-For fabrication hardware, there is a comically unsurmountable correspondence problem.
-People do not have nozzles out of which they can extrude molten plastic, nor do they have laser beams that can be blasted to melt materials.
-There is no clear way how learning from demonstration techniques can be used to describe configurations for settings such as laser power, speed, frequency, and resolution.
-Furthermore, these parameters don't map directly to the task the user wants to perform.
-The hacker may have a clear idea of the appearance of the material surface that they want to attain, and an understanding of how these parameters cause it just is not clear.
+The proposed research aims for a vision for fabrication machines that will be able to assist users in helping them to learn their parameters, models of operation, and constraints.
+I propose that a laser cutter that follows active learning can help a user more efficiently explore the space of possible parameters and converge on an optimal set of parameters.
+
+% for a new material, or to systematically vary these parameters until a raster.
+% The values of these are vary based on the material a user is working with, the speed they want to work to get done with, the depth of the marks, and how rough of a sketch they can accept for the current raster.
+% A major failure occurs in that the hacker will likely want to use the machine long before they want to develop an accurate mental model of how the parameters impact the work to be done.
+
+% There is no clear way how learning from demonstration techniques can be used to describe configurations for settings such as laser power, speed, frequency, and resolution.
+% Furthermore, these parameters don't map directly to the task the user wants to perform.
+% The hacker may have a clear idea of the appearance of the material surface that they want to attain, and an understanding of how these parameters cause it just is not clear.
 
 This work aims to answer the following questions that, to my knowledge, are open questions within both the fields of human-robot interaction and the fabrication concentration of human-computer interaction.
 First, \textbf{how can a robot learn an ideal configuration for a task when no demonstration is given?}
@@ -68,7 +72,7 @@ Measurements collected will include the time and iterations taken to perform the
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{figures/rasters}
-  \caption{\scriptsize{%
+  \caption{\small{%
   A drawing `rastered' into cardboard by a laser cutter with two different configurations.
   \emph{Left}: the original image given to the laser cutter.
   \emph{Center}: an etching that is too faint to see due to low power
