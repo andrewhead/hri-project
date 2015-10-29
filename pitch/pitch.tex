@@ -3,20 +3,45 @@
 \documentclass[12pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
+\usepackage{enumitem}
+
+% Bibliography
+\usepackage[backend=bibtex,firstinits=true,style=ieee]{biblatex}
+\AtEveryBibitem{%
+  \clearname{translator}%
+  \clearlist{publisher}%
+  \clearlist{address}%
+  \clearlist{location}%
+  \clearfield{pagetotal}%
+  \clearfield{isbn}%
+  \clearfield{url}%
+  \clearfield{doi}%
+  \clearfield{series}%
+  \clearfield{language}%
+  \clearfield{pages}%
+  \clearfield{volume}%
+  \clearfield{urlday}%
+  \clearfield{urlmonth}%
+  \clearfield{urlyear}%
+  \clearfield{issn}%
+  \clearname{editor}%
+}
+\addbibresource{references}
 
 \begin{document}
 
 \pagenumbering{gobble}
 
 \begin{center}
-  \textbf{Interaction Techniques and Active Learning Methods for Mixed Initiative Exploration of Fabrication Hardware Parameter Spaces}\\
+  \textbf{Interaction Patterns for Mixed Initiative Exploration of a Parameter Space \\
+  with an ``Active Learner'' Fabrication Machine}\\
   \vspace{.5em}
   Andrew Head
 \end{center}
 
-As you enter the Invention Lab---Berkeley's student hackerspace---you'll see evidence that getting started with fabrication hardware is hard.
-Scorched cardboard sits the scrap pile from laser cutting jobs that caught on fire.
-Dozens of failed 3D prints line the foyer walls from thin supports or severe overhangs.
+As you enter the Invention Lab, Berkeley's student hackerspace, you notice  that working with fabrication machines is hard.
+Scorched cardboard sits atop the scrap pile from laser cuts that caught fire.
+Failed 3D prints line the foyer walls, deformed from thin supports or improper orientation.
 % As you walk into the foyer of Berkeley's student hackerspace, you see dozens of failed 3D prints lined up along the walls.
 % These tell a solemn truth:
 % Getting started with fabrication hardware is hard.
@@ -32,6 +57,15 @@ Many values for these parameters can cause the material to scorch.
 
 The proposed research aims for a vision for fabrication machines that will be able to assist users in helping them to learn their parameters, models of operation, and constraints.
 I propose that a laser cutter that follows active learning can help a user more efficiently explore the space of possible parameters and converge on an optimal set of parameters.
+The intended contributions of this work are:
+\begin{enumerate}[noitemsep]
+\item A catalog of user problems actualizing their design intent with laser cutters
+\item Application of active learning to discovering an ideal fabrication machine configuration
+\item A qualitative and quantitative comparison of guided exploration of the configuration space to trial-and-error approaches
+\end{enumerate}
+
+%  \item How can a robot learn an ideal configuration for a task without demonstrations?
+%   \item What are the most efficient subjective inputs and interaction techniques to enable fast convergence to an ideal configuration with a fabrication machine?
 
 % for a new material, or to systematically vary these parameters until a raster.
 % The values of these are vary based on the material a user is working with, the speed they want to work to get done with, the depth of the marks, and how rough of a sketch they can accept for the current raster.
@@ -41,33 +75,29 @@ I propose that a laser cutter that follows active learning can help a user more 
 % Furthermore, these parameters don't map directly to the task the user wants to perform.
 % The hacker may have a clear idea of the appearance of the material surface that they want to attain, and an understanding of how these parameters cause it just is not clear.
 
-This work aims to answer the following questions that, to my knowledge, are open questions within both the fields of human-robot interaction and the fabrication concentration of human-computer interaction.
-First, \textbf{how can a robot learn an ideal configuration for a task when no demonstration is given?}
-Second, \textbf{what are the most efficient subjective inputs and interaction techniques to enable fast convergence to an ideal configuration with a fabrication machine?}
+% This work aims to answer the following questions that, to my knowledge, are open questions within both the fields of human-robot interaction and the fabrication concentration of human-computer interaction.
 
-This study will begin with an observational study with student members of the Invention Lab (around $n=5$).
-These students will be interviewed to better understand the frequency, severity, and types of errors students encounter expressing designs to fabrication hardware.
-Questions will include:
-What jobs have you submitted in the past that have failed?
-How many times did you have to iterate on this artifact before it was successfully fabricated?
-What did you learn about the capabilities of the hardware after this effort?
+This study will begin with a small number of interviews of with student members of the Invention Lab (around $n=5$).
+Participants will be asked about the frequency, severity, and types of errors students encounter enacting their designs with a laser cutter.
 
-Then I will implement an active learning scheme~\cite{settles_active_2010} that will collect user ratings for raster jobs based on example configurations of power, speed, resolution and frequency for a laser cutter, with the aim of predicting user ratings with a minimum number of examples.
-While active learning in typical contexts (see~\cite{settles_active_2010}) has been applied to learning linear decision boundaries for binary classification, we will draw upon past work that seeks to adapt active learning to predicting continuous values for examples (e.g.~\cite{sugiyama_active_2008}).
-Currently, I suspect that a Gaussian kernel function or a quadratic curve will best express a user's perception of the quality of a configuration in actualizing their design.
+I will implement an active learning algorithm for guiding a user to discover the ideal configuration for rastering an image with a laser cutter (for background, see~\cite{settles_active_2010}).
+The algorithm will provide examples to a user in order to collect an \emph{ordinal} rating of example quality.
+Each example will be a machine configuration including laser power, speed, frequency, and resolution.
+As we are attempting to discover some function that predicts configuration quality in the pursuit of some optimal configuration, I will implement the algorithm based on past work that discovers models that predict continuous values (e.g.~\cite{sugiyama_active_2008}).
+% Currently, I suspect that a Gaussian kernel function or a quadratic curve will best express a user's perception of the quality of a configuration in actualizing their design.
 
-I will conduct a study to determine what input methods will be most successful in helping a user converge to a desired rastering configuration.
-The usability study will be run in the Invention Lab with the Universal Laser Systems VLS3.50 machine, for which I have already received clearance to run user studies.
-Subjects will be provided with a work piece they are asked to replicate.
-One experimenter will direct the VLS3.50 to perform one raster job with configuration examples derived from the algorithm described above remotely (so that it is opaque to the participant).
-The participant will be asked to rate each example, providing a score that will be fed back into the active learning algorithm.
-After every third example, the model show the participant a raster with the optimal score according to the model learned so far.
-The raster will be considered `complete' if the user offers it the top score on the Likert scale.
-Subjects will all be exposed to three input methods via a simple web interface that connects back to the active learner:
-Likert-scale ratings of the most recent example, arrangement of rank of all seen examples so far, and trial and error (no active learning, but manual configuration of parameters only.)
+To understand the benefits and disadvantages of mixed initiative parameter space exploration based on active learning, I will run a usability study.
+Participants will be asked to reproduce laser cut raster jobs based on workpieces I provide.
+Method of parameter exploration will be varied:
+in one condition, they will lead themselves to find the ideal parameters.
+In the other, participants will be led through exploration of the configuration space by the active learning algorithm.
+I will measure the number of configurations tested 
+I will also ask Likert scale questions about perceptions of difficulty and satisfaction with each method of system, and ask for qualitative feedback.
 
-Given the limits of the hardware available in the Invention Lab, this study will likely include around 4 testers altogether.
-Measurements collected will include the time and iterations taken to perform the task, Likert scale ratings of user satisfaction, and qualitative feedback about strategies to achieve the ideal rastering.
+The usability study will be run in the Invention Lab with the Universal Laser Systems VLS3.50 machine.
+I have received clearance to work with this equipment.
+Given the limits of the hardware available, the initial proposed study will likely include around 4--6 testers altogether.
+% Measurements collected will include the time and iterations taken to perform the task, Likert scale ratings of user satisfaction, and qualitative feedback about strategies to achieve the ideal rastering.
 
 \begin{figure}
   \centering
@@ -75,10 +105,12 @@ Measurements collected will include the time and iterations taken to perform the
   \caption{\small{%
   A drawing `rastered' into cardboard by a laser cutter with two different configurations.
   \emph{Left}: the original image given to the laser cutter.
-  \emph{Center}: an etching that is too faint to see due to low power
+  \emph{Center}: an etching that is too faint to see due to low power.
   \emph{Right}: an etching that scorched the cardboard due to high power and low speed.
   A user of the laser cutter will have to manipulate the laser's parameters to get the desired appearance.}}
 \label{fig:rasters}
 \end{figure}
+
+\printbibliography[heading=none]
 
 \end{document}
