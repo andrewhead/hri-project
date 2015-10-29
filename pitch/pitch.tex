@@ -45,14 +45,12 @@ As you enter the Invention Lab, Berkeley's student hackerspace, you quickly noti
 Scorched cardboard sits atop the scrap pile from laser-cut materials that caught fire.
 Failed 3D prints line the foyer walls, deformed from thin supports and improper orientations.
 Consider what it takes to configure a laser cutter to ``raster'' images onto workpieces:
-% Rastering is the process of ``etching'' an image into a work piece with with a dot matrix of laser fixations.
 four different parameters control the depth, speed, and fidelity of the image etched into the material.
 Improper values cause the image to appear only faintly, or melt the material (see Figure~\ref{fig:rasters}).
 
-% This work seeks to \textbf{improve the efficiency and effectiveness of early, exploratory interactions with fabrication machines.}
-
 This research pursues a vision for fabrication machines that help users learn how to operate them.
-I will equip a laser cutter with an active learning algorithm to guide a user to explore the parameter space for rastering images.
+My key insight is that a fabrication machine can be equipped with an active learning algorithm to enable mixed initiative exploration of a parameter space.
+I implement this for a laser cutter and a maker rastering images.
 My intended contributions are:
 \begin{enumerate}[noitemsep]
 \item A catalog of user problems realizing design intent with laser cutters
@@ -69,20 +67,20 @@ The algorithm will collect a user's rating of raster quality.
 As the learned model will predict an continuous value, I will draw from past work for actively learning continuous-value models (e.g.~\cite{sugiyama_active_2008}).
 % Currently, I suspect that a Gaussian kernel function or a quadratic curve will best express a user's perception of the quality of a configuration in actualizing their design.
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{wrapfigure}{r}{0.4\textwidth}
   \centering
-  \includegraphics[width=0.5\textwidth]{figures/rasters}
+  \includegraphics[width=0.4\textwidth]{figures/rasters}
   \caption{%
-  A drawing `rastered' into cardboard by a laser cutter.
+  A drawing `rastered' into cardboard.
   \emph{Left}: the original image given to the laser cutter.
-  \emph{Center}: an etching that is too faint to see due to low power.
-  \emph{Right}: an etching that scorched the cardboard due to high power and low speed.
+  \emph{Center}: an etching that too faint to see due to low power.
+  \emph{Right}: an etching scorched into the cardboard due to high power and low speed.
   A user of the laser cutter has to manipulate the laser's parameters to get the desired appearance.}
 \label{fig:rasters}
 \end{wrapfigure}
 
 To understand the trade-offs of this method of mixed initiative parameter space exploration, I will run a usability study.
-Participants will be asked to recover the configuration for rastering images to appear like exemplars I provide.
+Participants will be asked to recover a configuration for rastering an image that matches an exemplar I provide.
 The method of parameter exploration will be varied:
 in one condition, participants explore configurations on their own.
 In the other, participants explore the configuration space prompted by the examples provided by the active learning algorithm.
