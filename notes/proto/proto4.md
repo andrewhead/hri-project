@@ -60,6 +60,11 @@ There are several things we can do to improve our system's ability to handle thi
 * Try to reduce the possibility of getting a minimax, by sampling not only at the corners, but the midpoints of the edges, which prohibits high-value parts of the distribution getting predicted around these midpoints
 * Put an absolute maximum on the allowed jump size
 
+We have iterated through several different APIs for optimization:
+* `leastsq` doesn't do more than 8 iterations, and seems to not change the parameters
+* `curve_fit` optimizes the parameters (as long as `max_fev` is set to 10000), but won't guarantee keeping the covariance matrix positive semi-definite.
+* `sklearn.mixture.GMM`: this algorithm is only built to fit a Gaussian to a set of observations sampled from a random variable, and can't fit probability predefined probability densities at different points.  (Though in a non-active learning context where all of the densities were available ahead of time, you could approximate this effect by scaling the number of observations at a given point by the intended probability density.)
+
 ### Technical Improvements
 
 ### Research Ideas
