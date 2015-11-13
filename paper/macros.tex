@@ -1,0 +1,13 @@
+% System names
+\newglossaryentry{systemname}
+{%
+    name=FabExample,
+    description={A system for mixed-initiative exploration of a fabrication machine's parameter space.}
+}
+
+% Revision Macros
+\newcommand{\andrew}[1]{{\color{red}\textbf{AH\@: #1}\normalfont}}
+\newcommand{\bjoern}[1]{{\color{blue}\textbf{BH\@: #1}\normalfont}}
+\newcommand{\shortchange}[1]{{\color{OliveGreen}\textbf{#1}\normalfont}}
+% \newcommand{\shortchange}[1]{{#1}}
+\newenvironment{changes}{\shortchange\bgroup}{\egroup}
