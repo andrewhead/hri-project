@@ -15,4 +15,3 @@
   * Adaptively decrease the first ratings given by the users
   * Adjust ratings based on some initial scores for some sanity ratings
   * Give people exemplars of what is a '1', what is a '3', and what is a '5'
-
