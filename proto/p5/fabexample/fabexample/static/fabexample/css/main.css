@@ -1,0 +1,42 @@
+p, h1, h2, h3, h4, h5, h6, label, input {
+  font-family: Helvetica;
+}
+
+#main_cont {
+  width: 70%;
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
+#radio_cont {
+  margin: 0 auto;
+  width: 100%;
+}
+
+#radio_cont label {
+  width: 22%;
+  font-size: 42px;
+  margin: 5px;
+  color: black;
+}
+
+#task_cont input[name^="task"] {
+  width: 30%;
+  height: 300px;
+  margin: 5px;
+  font-size: 72px;
+}
+
+#wait_img {
+  width: 80%;
+}
+
+#wait_done_cont {
+  text-align: center;
+}
+
+#wait_done_button {
+  font-size: 28px;
+  -moz-appearance: none;
+  padding: 10px;
+}

@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<html>
+    <head>
+    <meta charset='utf-8' />
+    <title>Task Chooser</title>
+    <link rel='stylesheet' href="{% static "fabexample/css/jquery-ui.css" %}" />
+    <link rel='stylesheet' href="{% static "fabexample/css/main.css" %}" />
+    <script src="{% static "fabexample/js/jquery.min.js" %}"></script>
+    <script src="{% static "fabexample/js/js.cookie.js" %}"></script>
+    <script src="{% static "fabexample/js/jquery-ui.js" %}"></script>
+    <script>
+        $(function() {
+            $('#radio_cont').buttonset();
+        });
+    </script>
+    </head>
+    <body>
+        <div id='main_cont'>
+            <form method='GET' action={% url 'wait' %}>
+                <h1>Which Participant?</h1>
+                <div id='radio_cont'>
+                    <input type='radio' id='radio1' name='participant_id' value='1'/><label for='radio1'>1</label>
+                    <input type='radio' id='radio2' name='participant_id' value='2'/><label for='radio2'>2</label>
+                    <input type='radio' id='radio3' name='participant_id' value='3'/><label for='radio3'>3</label>
+                    <input type='radio' id='radio4' name='participant_id' value='4'/><label for='radio4'>4</label>
+                    <input type='radio' id='radio5' name='participant_id' value='5'/><label for='radio5'>5</label>
+                    <input type='radio' id='radio6' name='participant_id' value='6'/><label for='radio6'>6</label>
+                    <input type='radio' id='radio7' name='participant_id' value='7'/><label for='radio7'>7</label>
+                    <input type='radio' id='radio8' name='participant_id' value='8'/><label for='radio8'>8</label>
+                </div>
+                <h1>Pick a Task</h1>
+                <div id='task_cont'>
+                    <input type='submit' name='task1' value='1'/>
+                    <input type='submit' name='task2' value='2'/>
+                    <input type='submit' name='task3' value='3'/>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

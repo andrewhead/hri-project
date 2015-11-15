@@ -1,2 +1,4 @@
 *.swp
 venv
+*.pyc
+.DS_Store

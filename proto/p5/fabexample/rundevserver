@@ -1,0 +1,1 @@
+DJANGO_SETTINGS_MODULE=fabexample.settings.dev python manage.py runserver 9005
