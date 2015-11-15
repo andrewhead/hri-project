@@ -68,20 +68,42 @@ A user works with a machine to create three workpieces.
 In two of the conditions, they are led through a list of possible configurations.
 In the third condition, they create the workpiece themselves.
 
+Each cut is performed on a separate piece of material just big enough to hold the engraving.
+After each cut, the participant is asked to take the workpiece out, compare it to the example, give it a rating, and decide whether to accept the current workpiece as a reproduction of the example they are provided.
+
+The workstation is instrumented with a light
+
 In the self-led condition:
 if they lit the material on fire, then they were asked to stop cutting immediately.
+Participants are also allowed to take notes on what they've seen so far.
+
+In the active learning condition:
+participants are shown two engravings at a time:
+the optimal engraving for the currently learned model, and the next example for improving the model.
+participants therefore choose whether to accept the first example, and rate the second example, for each iteration.
+
+In all conditions, participants are encouraged to write down the ratings they have assigned so far.
 
 Participants are told,
+"Your task is to reproduce the workpiece here.
+Here are some examples of failed attempts.
+You will work with the machine to configure the machine to get the cut to reproduce this appearance.
+You will choose when you feel that you have accurately reproduced the work."
 "The machine is going to attempt to guess what you want.
 As you give ratings, it's going to get closer.
 Your task is to provide ratings to help it get closer to the ideal etching.
 Then when you're done, click 'Accept'."
 
+After examining each example, the participants hand that example to the experimenter, who marks it with the index of the engraving with a Sharpie pen.
+Participants are allowed to refer to previous examples.
+In that case, the experimenter provides them with the stack of examples they've created so far.
+However, the experimenter will not give them any information about the parameters or ratings that they've given.
+
 A different user interface is provided for the manual and automatic exploration conditions.
 In the manual condition, users are provided with an interface of three sliders that they can alter to etch the material in a different way.
 *Before conducting the experiment*, we noted for each material the parameter bounds where the material would catch fire when other parameters were at ~50% capacity.
 This parameter for the laser was not allowed to be set to this value in the user interface.
-This allowed us to whittle down the space
+This allowed us to whittle down the space.
 
 ### Preparation to do
 
