@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <html>
     <head>
-    <meta charset="utf-8" />
+    <meta charset='utf-8' />
     <title>Wait</title>
     <link rel='stylesheet' href="{% static "fabexample/css/main.css" %}" />
     </head>
@@ -9,9 +9,9 @@
         <div id='main_cont'>
             <h1>Engraving...</h1>
             <img id='wait_img' src="{% static "fabexample/img/laser.png" %}" />
-            <form method="GET" action={% url 'rate' %}>
-                <div id="wait_done_cont">
-                    <input type="submit" id="wait_done_button" value="Click here when engraving is finished." />
+            <form method='GET' action={% url 'rate' %}>
+                <div id='wait_done_cont'>
+                    <input type='submit' id='wait_done_button' value='Click here when engraving is finished.' />
                 </div>
             </form>
         </div>

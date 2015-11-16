@@ -15,3 +15,11 @@ def home(request):
 
 def wait(request):
     return render(request, 'fabexample/wait.html', {})
+
+
+def rate(request):
+    return render(request, 'fabexample/rate.html', {})
+
+
+def accept(request):
+    return render(request, 'fabexample/accept.html', {})
