@@ -5,6 +5,7 @@
 ### Purpose
 
 We determine what surface shapes best fit human ratings of laser cutter output.
+We also determine how reliable human ratings are of laser cut quality.
 
 ### Summary
 
@@ -12,35 +13,72 @@ We determine what surface shapes best fit human ratings of laser cutter output.
 
 ### Conditions
 
-Note that the surfaces we want to test are technically a condition in one set of tests we'll run.
+#### Per trial
 
-#### Generality
+* Laser power
+* Resolution
 
-To increase the generality, we do the following:
-* multiple depths: shallow, medium, and deep
-* multiple materials: cardboard, acrylic, particle board
+Limited to two variable to enable rapid testing and fewer conditions
+
+#### Per subject
+
+* surface: Gaussian, Gaussian mixture, second-order polynomial
+
+### Random variables
+
+* target depth: shallow, medium, and deep
+* material: cardboard, acrylic, particle board
 
 ### Measures
 
-We are interested in observing this output:
-* How polar are the human ratings?  Measure by the amount of variance is the collection of ratings for each user.
-* Which surface type fits best?  Measure by the error of each of the model types fit, and visually.
-* How much noise is there in the data?  Report the error for the chosen model type.
-* How close to the peak does a configuration have to be to be above "worst"?
+#### Determining the quality of fit
 
-The possible surface shapes we want to test for fit are: Gaussian curve, mixture of Gaussians, second-order polynomial with thresholds
+* By surface: Quality of fit (% error, variance of error, observe visually)
+
+#### Determining the fallability of using human subject ratings
+
+* By subject: Variance of human ratings overall (Implies polarity / reliability)
+* By subject: Variance of human ratings within sample (a few samples are shown several times and spaced at random times in the sequence)
+* By subject: Distribution of gradient magnitudes: is it a smooth or jagged increase?  (we want smooth)
+* Between subject: Variance of rating for an image.  Shows whether we can adapt models found by different people to the same task.
 
 ### Follow-Up Tests
-
-We also conduct follow-up studies to determine the following:
-* Is it likely that subjects will change their rating on a past sample after seeing a few more samples?
 
 To maximize the applicability to eventual use of steepest ascent, we do the following:
 * in one of the conditions, we show samples as if they were shown in steepest ascent (from not very close in one of the corners to very close)
 
-### Apparatus
+### Artifacts
+
+A 96-pt letter "O" was engraved for 5 combinations of power and PPI.
+We set the power to 1, 25, 50, 75 and 100 percent. (1 is the lowest it can go)
+We set the resolution to 10, 32, 100, 316, and 1000 PPI (logarithmic scale).
+They were placed at 25mm apart from each other and arranged in a grid.
+Power was varied across the Y-axis, and resolution along the X-axis.
+The initial defaults  were set to Natural → Wood → Soft Wood → General Soft Woods in the ULS front-end.
+We kept the default speed.
+The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
+Experiments were performed on a 5.6mm piece of particle board.
+
+### Apparatus 1: Fitting surfaces to random sampling
+
+Subjects are shown all examples in a random order for each of three rounds.
+For each round, the random order is distinct.
+The participant is not told that the next round is starting.
+
+### Apparatus 2: Fitting surfaces to steepest ascent
+
+Subjects are shown examples that proceed on a trajectory from not good to ideal.
+Assuming that the laser cutter can pick the absolute ideal trajectory, how quickly does the user's ratings converge relative rate of procession towards the ideal configuration?
+This relationship suggests how we should scale user feedback in the ideal case to derive a "normalized" rating from the one they offer.
+Participants are only allowed to participate in one or the other of these tasks.
 
 ### Expected Outcome
+
+We find high variance between the first and second time showing a sample to a person.
+We show lower variance between the second and third time a sample is shown.
+We find that the Gaussian fits best of all, but there is a high amount of noise.
+The Gaussian also fits better with the second round of ratings.
+We find that between subject-ratings of examples is high.
 
 ## Notes
 
