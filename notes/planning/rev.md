@@ -1,5 +1,21 @@
 # Revisions
 
+## 2015-11-17, Talk with Chelsea
+
+* I could consider robust optimization to handle the noise, but it's probably overkill for so few samples
+* Reinforcement learning may be worth considering
+* Take a look at the residuals and their spread, and try to find out if there's something wrong in my specification of the learner
+
+## 2015-11-17, Talk with Anca
+
+* Need better algorithm for comparisons
+* May need smarter algorithm for steepest ascent
+* For comparisons, consider stochastic hill-climbing
+* Don't worry too much about usability study.  Get some number on MTurk
+* Don't worry too much about stellar results
+* Anca is excited by comparisons and ways of handling subjective noise of participants
+* Relevant readings: Naelder-Mead, and something regarding "generalized binary search comparison rank nets"
+
 ## 2015-11-09--11, UIST ideas
 
 * Contexts where rapid testing of parameters could be helpful
