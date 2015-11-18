@@ -10,7 +10,6 @@ For our study, we'll consider using it as a standalone step to approximate the i
 
 ### Summary
 
-
 ## Procedure
 
 ### Construction
@@ -64,6 +63,20 @@ We have iterated through several different APIs for optimization:
 * `leastsq` doesn't do more than 8 iterations, and seems to not change the parameters
 * `curve_fit` optimizes the parameters (as long as `max_fev` is set to 10000), but won't guarantee keeping the covariance matrix positive semi-definite.
 * `sklearn.mixture.GMM`: this algorithm is only built to fit a Gaussian to a set of observations sampled from a random variable, and can't fit probability predefined probability densities at different points.  (Though in a non-active learning context where all of the densities were available ahead of time, you could approximate this effect by scaling the number of observations at a given point by the intended probability density.)
+* `optimize`: finally, we can fit a Gaussian using sequential least squares.  We fit the covariance and means, providing constraints on the determinants of the principal minors to ensure that the covariance matrix is positive semi-definite.
+
+However, the fitting of the Gaussian is difficult, even though it is pretty accurate.
+Mostly because the Gaussian tries to fit the most possible points, but it only has a small set of them.
+So any points that deviate from the model in this initial set are highly likely to derail the model.
+Meanwhile, the steepest ascent algorithm keeps the algorithm from exploring unexplored space—in this way, perhaps it prevents the model from "balancing out" and generalizing?
+
+There are a couple of approaches we can take when users give noisy ratings:
+1. Our objective function can tolerate a certain amount of noise to begin with
+2. We can allow users to adjust their ratings as more observations come in, so that we aren't always stuck with noisy observations.  This could be implemented as a direct manipulation click-and-drag interface for aligning observations on a score continuum
+3. Have users rank each of the observations and update them.  Give a mapping of the rank to a value from a sigmoid, to approximate that points on either end are either very good or very bad (assuming that a sigmoid will represent the frequency of densities based on distance from the mean)
+4. Find a different function to match than Gaussian (e.g., a step and ramp hybrid that can match "bad", "good" and "best")
+
+A Mechanical Turk study or two may be able to reveal a mapping between user rankings of examples (for ideas 2 and 3) and actual quality of the examples.
 
 ### Technical Improvements
 
