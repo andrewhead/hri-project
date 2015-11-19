@@ -49,14 +49,14 @@ To maximize the applicability to eventual use of steepest ascent, we do the foll
 
 ### Artifacts
 
-A 48-pt letter "O" was engraved for 5 combinations of power and PPI.
+A 64-pt letter "O" was engraved for 5 combinations of power and PPI.
 Each of the dimensions increases on a logarithmic scale as we noticed through preliminary experimentation that there is a lot of variation at low values of the settings that gets skipped at the higher values.
 * We set the power to 1, 3, 10, 32 and 100 percent. (1 is the lowest it can go)
 * We set the speed to 1, 3, 10, 32 and 100 percent.
 * We set the resolution to 10, 32, 100, 316, and 1000 PPI (logarithmic scale).
 
 Experiments were performed on a 5.6mm piece of particle board.
-Cuts were placed at 15mm apart from each other and arranged in a grid.
+Cuts were placed at 20mm apart from each other and arranged in a grid.
 Power was varied across the Y-axis, and speed along the X-axis.
 Resolution was varied between between consecutive grids.
 The machine was instructed to not "home" back to the origin between cuts to speed up the cutting process.
@@ -64,6 +64,14 @@ The machine was instructed to not "home" back to the origin between cuts to spee
 The initial defaults  were set to Natural → Wood → Soft Wood → General Soft Woods in the ULS front-end.
 <!--We kept the default speed.-->
 The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
+
+#### Notes from the cutting process
+
+* Several of the engravings were not completed, as they caught on fire for more than one second.  Others, I didn't even run because they would have caught fire based on the trend of increasing flames as I altered the parameters.
+* Three of the cuts fell through because the laser cut through the entire material.  These row 4, column 1 for groups 3, 4, and 5.  While I attempted to align the "o" back into the whole that it fell through, I'm not positive the orientation is correct.  For group 5, it looks like the inner ring is facing backward instead of forward as its coloring does not blend with the outer ring.
+* Probably for our optimization process, we should set several conditions: examples include try to get a low-res (dashed) engraving, an engraving that with thick lines that did not fall through, an engraving with a smooth but very light line, a fine but dark line that's not charred
+* You can load and save laser cutter parameters.  Maybe there's a way to automate this so that I can run a lot of examples at once.
+* For the final experiment, we may want to distance these Os even more.  Flames from some cuts appear to char the board near neighboring cuts!
 
 ### Apparatus 1: Fitting surfaces to random sampling
 
