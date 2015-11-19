@@ -1,0 +1,33 @@
+\section{Related Work}
+
+\subsection{Optimizing Black Box Functions}
+
+We draw upon a rich history of related work on optimization for black box functions.
+This can trace its origins back to optimal experiment design~\cite{box}.
+The intent of optimal experiment design is to (quote from Box \& Draper).
+
+Related techniques for methods for numerically determining an optimum include:
+\begin{itemize}
+  \item Nelder-Mead method
+  \item Evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))
+  \item Bayesian optimization
+  \item Gaussian processes
+  \item Response Surface Modeling
+\end{itemize}
+
+We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning and multi-arm bandit problems.
+An overarching theme from this body of work is ``exploration'' vs.\ ``exploitation''.
+This means that a large enough portion of the function's domain is covered to be reasonably certain that optima found are global, not local;
+at the same time, the algorithm does not spend too long exploring regions that are not likely to contain the global optimum.
+
+Philosophically, this work aims to lessen the effort to train a machine to learn a human's model of ideal behavior.
+In this aim, it is similar to past work on robotic ``clicker training''.
+Clicker training aims to teach robots complex behavior with a single binary input channel that can reward partial behaviors until a robot builds up the full behavior.
+
+One domain highly related to our domain of interest is that of user preference modeling.
+For an example of a problem framing of Bayesian optimization for user preference modeling, see~\cite{brochu_tutorial_2010}.
+
+\subsection{Assistive Fabrication Devices}
+
+A growing body of recent work has focused on improving makers' ability to express their intentions with fabrication machines.
+Relevant papers include \ldots
