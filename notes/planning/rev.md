@@ -1,5 +1,18 @@
 # Revisions
 
+## 2015-11-18, Anca's e-mail feedback
+
+* Potential methods for numeric optimization
+    * hill climb with estimated gradient (finite difference?)
+    * Nelder-Mead (see Wikipedia)
+    * CMA-ES (see Wikipedia)
+    * Try these out with some fake data first!
+* Notes on the comparison approach
+    * a human could identify the best one of a small set, which could estimate the gradient
+* To handle noise, see "Practical Bayesian Optimization of Machine Learning Algorithms"
+* This is similar to the multi-arm bandit problem (see Wikipedia).  But it's different in that points are dependent
+* For the usability study, go with between-subject, to keep from biasing subjects
+
 ## 2015-11-17, Talk with Chelsea
 
 * I could consider robust optimization to handle the noise, but it's probably overkill for so few samples

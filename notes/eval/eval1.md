@@ -49,15 +49,21 @@ To maximize the applicability to eventual use of steepest ascent, we do the foll
 
 ### Artifacts
 
-A 96-pt letter "O" was engraved for 5 combinations of power and PPI.
-We set the power to 1, 25, 50, 75 and 100 percent. (1 is the lowest it can go)
-We set the resolution to 10, 32, 100, 316, and 1000 PPI (logarithmic scale).
-They were placed at 25mm apart from each other and arranged in a grid.
-Power was varied across the Y-axis, and resolution along the X-axis.
-The initial defaults  were set to Natural → Wood → Soft Wood → General Soft Woods in the ULS front-end.
-We kept the default speed.
-The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
+A 48-pt letter "O" was engraved for 5 combinations of power and PPI.
+Each of the dimensions increases on a logarithmic scale as we noticed through preliminary experimentation that there is a lot of variation at low values of the settings that gets skipped at the higher values.
+* We set the power to 1, 3, 10, 32 and 100 percent. (1 is the lowest it can go)
+* We set the speed to 1, 3, 10, 32 and 100 percent.
+* We set the resolution to 10, 32, 100, 316, and 1000 PPI (logarithmic scale).
+
 Experiments were performed on a 5.6mm piece of particle board.
+Cuts were placed at 15mm apart from each other and arranged in a grid.
+Power was varied across the Y-axis, and speed along the X-axis.
+Resolution was varied between between consecutive grids.
+The machine was instructed to not "home" back to the origin between cuts to speed up the cutting process.
+
+The initial defaults  were set to Natural → Wood → Soft Wood → General Soft Woods in the ULS front-end.
+<!--We kept the default speed.-->
+The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
 
 ### Apparatus 1: Fitting surfaces to random sampling
 
