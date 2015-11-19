@@ -8,21 +8,23 @@ The intent of optimal experiment design is to (quote from Box \& Draper).
 
 Related techniques for methods for numerically determining an optimum include:
 \begin{itemize}
-  \item Nelder-Mead method
-  \item Evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))
-  \item Bayesian optimization
-  \item Gaussian processes
-  \item Response Surface Modeling
+  \item Nelder-Mead method~\cite{nelder}
+  \item Evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))~\cite{cma}
+  \item Bayesian optimization~\cite{brochu_tutorial_2010}
+  \item Gaussian processes~\cite{gaussian}
+  \item Response Surface Modeling~\cite{box}
+  \item Reinforcement learning~\cite{reinforcement}
 \end{itemize}
 
-We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning and multi-arm bandit problems.
+We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning~\cite{al} and multi-arm bandit problems~\cite{multi-armed}.
 An overarching theme from this body of work is ``exploration'' vs.\ ``exploitation''.
 This means that a large enough portion of the function's domain is covered to be reasonably certain that optima found are global, not local;
 at the same time, the algorithm does not spend too long exploring regions that are not likely to contain the global optimum.
 
 Philosophically, this work aims to lessen the effort to train a machine to learn a human's model of ideal behavior.
-In this aim, it is similar to past work on robotic ``clicker training''.
+In this aim, it is similar to past work on robotic ``clicker training''~\cite{clicker_1}~\cite{clicker_2}.
 Clicker training aims to teach robots complex behavior with a single binary input channel that can reward partial behaviors until a robot builds up the full behavior.
+This can be considered a simple version of reinforcement learning~\cite{reinforcement}, where a human judge offers rewards to a robot so that it can learn an ideal policy of how to act when it's in a certain state.
 
 One domain highly related to our domain of interest is that of user preference modeling.
 For an example of a problem framing of Bayesian optimization for user preference modeling, see~\cite{brochu_tutorial_2010}.
