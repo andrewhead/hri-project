@@ -7,10 +7,10 @@
     </head>
     <body>
         <div id='main_cont'>
-            <h1 id='main_header'>Get Here</h1>
+            <h1 id='main_header'>Goal</h1>
             <div id='exemplar_cont'></div>
             <div id='rank_cont'>
-                <h3>Arrange by rank</h3>
+                <h2>Sort the examples by quality</h2>
                 <div id='rank_panel'>
                     <div class='ref_label'>
                         <p>Best</p>
@@ -21,9 +21,12 @@
                     </div>
                 </div>
             </div>
-            <button id='upload_ranking_butt'></button>
+            <div id='upload_ranking_cont'>
+                <button id='upload_ranking_butt'>I'm Done Sorting</button>
+            </div>
         </div>
         <script src="{% static "simplex/js/d3.js" %}"></script>
+        <script src="{% static "simplex/js/jquery.min.js" %}"></script>
         <script src="{% static "simplex/js/ui.js" %}"></script>
     </body>
 </html>

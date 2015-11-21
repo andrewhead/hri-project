@@ -10,13 +10,18 @@ p, h1, h2, h3, h4, h5, h6, label, input {
 
 #main_header {
   text-align: center;
+  font-size: 64px;
 }
 
 #exemplar_cont {
   text-align: center;
 }
 
-#rank_cont h3 {
+#rank_cont {
+  margin-top: 40px;
+}
+
+#rank_cont h2 {
   text-align: center;
 }
 
@@ -24,8 +29,25 @@ p, h1, h2, h3, h4, h5, h6, label, input {
   text-align: center;
 }
 
+#rank_bar {
+  border: 1px black solid;
+}
+
 .ref_label, #rank_bar {
   display: inline-block;
   margin-right: 30px;
   vertical-align: middle;
+}
+
+.ref_label {
+  font-size: 24px;
+}
+
+#upload_ranking_cont {
+  text-align: center;
+}
+
+#upload_ranking_butt {
+  margin-top: 40px;
+  font-size: 36px;
 }
