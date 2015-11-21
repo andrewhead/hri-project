@@ -3,7 +3,29 @@ p, h1, h2, h3, h4, h5, h6, label, input {
 }
 
 #main_cont {
-  width: 70%;
+  width: 1000px;
   padding-top: 20px;
   margin: 0 auto;
+}
+
+#main_header {
+  text-align: center;
+}
+
+#exemplar_cont {
+  text-align: center;
+}
+
+#rank_cont h3 {
+  text-align: center;
+}
+
+#rank_panel {
+  text-align: center;
+}
+
+.ref_label, #rank_bar {
+  display: inline-block;
+  margin-right: 30px;
+  vertical-align: middle;
 }
