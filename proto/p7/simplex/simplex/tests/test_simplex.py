@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import mock
 
-from simplex import Simplex, query_ranks, Mutation
+from simplex.simplex import Simplex, query_ranks, Mutation
 
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")

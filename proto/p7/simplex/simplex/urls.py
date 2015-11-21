@@ -1,11 +1,11 @@
 from django.conf.urls import url
 
-import simplex.views
+import views
 
 
 urlpatterns = [
-    url(r'^$', simplex.views.home, name='home'),
-    url(r'^home$', simplex.views.home, name='home'),
-    url(r'^update_vertices$', simplex.views.update_vertices, name='update_vertices'),
-    url(r'^get_next$', simplex.views.get_next, name='get_next'),
+    url(r'^$', views.home, name='home'),
+    url(r'^home$', views.home, name='home'),
+    url(r'^update_vertices$', views.update_vertices, name='update_vertices'),
+    url(r'^get_next$', views.get_next, name='get_next'),
 ]

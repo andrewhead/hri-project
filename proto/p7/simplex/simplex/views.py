@@ -4,13 +4,14 @@
 from __future__ import unicode_literals
 import logging
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def home(request):
-    return HttpResponse("At home")
+    return render(request, 'simplex/home.html', {})
 
 
 def update_vertices(request):

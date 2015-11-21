@@ -1,1 +1,1 @@
-DJANGO_SETTINGS_MODULE=fabexample.settings.dev python manage.py runserver 9005
+DJANGO_SETTINGS_MODULE=simplex.settings.dev python manage.py runserver 9006

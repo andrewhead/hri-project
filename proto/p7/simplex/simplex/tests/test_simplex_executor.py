@@ -6,7 +6,7 @@ import logging
 import unittest
 import numpy as np
 
-from simplex import SimplexExecutor
+from simplex.simplex import SimplexExecutor
 
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
