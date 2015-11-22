@@ -1,3 +1,6 @@
 [submodule "deps/vowpal_wabbit"]
 	path = deps/vowpal_wabbit
 	url = https://github.com/JohnLangford/vowpal_wabbit.git
+[submodule "proto/p7/simplex"]
+	path = proto/p7/simplex
+	url = git@github.com:andrewhead/fabexample.git
