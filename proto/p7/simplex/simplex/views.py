@@ -3,11 +3,13 @@
 
 from __future__ import unicode_literals
 import logging
-from django.http import JsonResponse
-from django.shortcuts import render
-from ipware.ip import get_real_ip
 import numpy as np
 import json
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from ipware.ip import get_real_ip
 
 from simplex import SimplexExecutor
 from models import LoadPageEvent, Job
@@ -20,6 +22,12 @@ simplex_executor = SimplexExecutor()
 def home(request):
     LoadPageEvent.objects.create(ipAddr=get_real_ip(request))
     return render(request, 'simplex/home.html', {})
+
+
+def sliders(request):
+    return render(request, 'simplex/control.html', {
+        'img': static("simplex/img/exemplar" + str(1) + ".png"),
+    })
 
 
 def update_vertices(request):
@@ -77,5 +85,5 @@ def get_next(request):
 
 def queue(request):
     return render(request, 'simplex/queue.html', {
-        'jobs': Job.objects.all().order_by('-timestamp')[:20]
+        'jobs': Job.objects.all().order_by('-timestamp')[:20],
     })

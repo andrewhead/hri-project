@@ -2,10 +2,18 @@ p, h1, h2, h3, h4, h5, h6, label, input, td, th {
   font-family: Helvetica;
 }
 
+body {
+  text-align: center;
+}
+
 #main_cont {
-  width: 1000px;
   padding-top: 20px;
+  display: inline-block;
   margin: 0 auto;
+}
+
+#main_cont.slider_main_cont {
+  padding-top: 100px;
 }
 
 #main_header {
@@ -75,4 +83,46 @@ tr:nth-child(odd) td {
 
 tr {
   border-top: 1px solid #aaaaaa;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+#example_cont {
+  margin-top: 80px;
+  width: 200px;
+  margin-right: 70px;
+}
+
+#exemplar_img {
+  width: 95%;
+  display: block;
+  margin: 0 auto;
+}
+
+.col2 {
+  float: left;
+}
+
+.col3 {
+  float: left;
+  width: 33%;
+}
+
+div.slider {
+  margin: 0 auto;
+  height: 250px;
+}
+
+.slider_par {
+  text-align: center;
+}
+
+.slider_val, .slider_label {
+  font-size: 16px;
+}
+
+.slider_val {
+  width: 7ex;
 }
