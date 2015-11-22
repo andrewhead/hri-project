@@ -73,3 +73,9 @@ def get_next(request):
         'expansion': expansion.tolist(),
         'contraction': contraction.tolist(),
     })
+
+
+def queue(request):
+    return render(request, 'simplex/queue.html', {
+        'jobs': Job.objects.all().order_by('-timestamp')[:20]
+    })

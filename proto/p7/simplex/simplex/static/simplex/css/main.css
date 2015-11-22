@@ -1,4 +1,4 @@
-p, h1, h2, h3, h4, h5, h6, label, input {
+p, h1, h2, h3, h4, h5, h6, label, input, td, th {
   font-family: Helvetica;
 }
 
@@ -50,4 +50,29 @@ p, h1, h2, h3, h4, h5, h6, label, input {
 #upload_ranking_butt {
   margin-top: 40px;
   font-size: 36px;
+}
+
+#table_cont {
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 80px;
+}
+
+table {
+  font-size: 20px;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+th, td {
+  padding: 8px;
+  padding-right: 70px;
+}
+
+tr:nth-child(odd) td {
+  background-color: #eeeeee;
+}
+
+tr {
+  border-top: 1px solid #aaaaaa;
 }
