@@ -94,6 +94,8 @@ This constant makes sure that the width of the cropped image includes space for 
 We cropped the image to each these dimensions, centering it about the center O of each grid.
 Then we split each image into 25 individual Os with with a 128x128 resolution (see the `split.sh` script).
 
+The results of this process are in a file named `images.zip` in Andrew's bDrive.
+
 ### Apparatus 1: Fitting surfaces to random sampling
 
 Subjects are shown all examples in a random order for each of three rounds.
