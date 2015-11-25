@@ -75,6 +75,25 @@ The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
 * Lower speeds took a noticably longer amount of time.  I did not record the difference in times.
 * For the resolutions of 10 and 32 PPI, the bottom row (max power) looked like it automatically booted up the resolution to the maximum resolution.  Is this an eccentricity in the printer behavior?
 
+#### Preparing the images
+
+I took images of each of the squares of 5x5 configurations that I engraved.
+I rotated each in OS X Photos so that all grids were aligned with the X and Y edges.
+In Preview, I updated the image of each grid.
+To make sure that the coloring of each one was approximately the same, I adjusted the colors by setting the levels with "Auto Levels".
+Then I resized each one so that each one could be sliced into a 5x5 grid of smaller images, where one "O" was in the center of each one.
+I measured the pixel size of one of the Os for each image.
+I determined the width and height with the following equation:
+
+    Width = (O width) * 5 * (291 / 211)
+
+Width and height were equal as each cell in the table was in a square.
+The *291* and *211* constants came from measuring the width of an O, with and without the margin on either side.
+291 was the pixel width with margins, and 211 was the pixel width without.
+This constant makes sure that the width of the cropped image includes space for margins between each O.
+We cropped the image to each these dimensions, centering it about the center O of each grid.
+Then we split each image into 25 individual Os with with a 128x128 resolution (see the `split.sh` script).
+
 ### Apparatus 1: Fitting surfaces to random sampling
 
 Subjects are shown all examples in a random order for each of three rounds.
