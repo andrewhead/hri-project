@@ -14,28 +14,25 @@ This preliminary study determines whether this form of mixed-initiative paramete
 ### Conditions
 
 * Manual determination of the parameters (SL = self-led)
-* Active learning (AL)
-* Steepest ascent (SA)
+* Simplex-based (Nelder-Mead) method
 
 ### Random Variables
 
-To generalize to different materials
-* type of material: {particle board, acrylic, cardboard}
-* optimized quality: {scorched, melted acrylic, light and sparse}
-<!--* depth: {shallow, medium, deep}-->
+Unfortunately, we only work with particle board for this one pilot study.
 
 ### Measures
 
 Efficiency of the interaction method
 * Total time taken
 * Number of tested configurations
+* Time to complete each engraving
 * Number of user interface actions
 * Efficiency of coverage of the parameter space (measured by dividing the space into a grid and counting up the squares filled)
 
 Safety of the interaction method
 * The number of workpieces that caught fire
 
-Human preference
+Human preference (probably skipping these tomorrow)
 * Frustration
 * Understanding of what the machine was doing
 * Boredom
@@ -53,7 +50,7 @@ This was to hide the that the author had developed these techniques.
 Participants were involved for a total of 60 minutes, including a 5-minute briefing, three 15-minute sessions of experimentation with the laser cutter for each of the different conditions, and a 5-minute survey.
 If participants did not finish a condition within 15 minutes, they were asked to move on.
 
-#### Intended participants
+#### Invited participants
 
 * Kristin Stephens-Martinez
 * Matthew Waliman
@@ -90,7 +87,7 @@ Here are some examples of failed attempts.
 You will work with the machine to configure the machine to get the cut to reproduce this appearance.
 You will choose when you feel that you have accurately reproduced the work."
 "The machine is going to attempt to guess what you want.
-As you give ratings, it's going to get closer.
+As you give comparisons, it's going to get closer.
 Your task is to provide ratings to help it get closer to the ideal etching.
 Then when you're done, click 'Accept'."
 
@@ -100,15 +97,31 @@ In that case, the experimenter provides them with the stack of examples they've 
 However, the experimenter will not give them any information about the parameters or ratings that they've given.
 
 A different user interface is provided for the manual and automatic exploration conditions.
+<!--
 In the manual condition, users are provided with an interface of three sliders that they can alter to etch the material in a different way.
 *Before conducting the experiment*, we noted for each material the parameter bounds where the material would catch fire when other parameters were at ~50% capacity.
 This parameter for the laser was not allowed to be set to this value in the user interface.
 This allowed us to whittle down the space.
+-->
 
-### Preparation to do
+#### Choosing the seeds for the simplex
 
-* Get the nozzle attached to the machine.
-* Ask Chris: can I work with real-life subjects?
+The first four cuts for each participants in the Nelder-Mead condition are the same four sets of settings.
+These are:
+* high power (100%), high speed (100%), high resolution (1000) (dark and crisp)
+* low power (3%), high speed (100%), high resolution (1000) (light and crisp)
+* high power (10%), low speed (1%), low resolution (10) (dark and sparse)
+We chose starting configurations near the extremes that were highly diverse in appearance.
+We also made sure that each of the parameters was shown at their extreme for one or the other conditions.
+(Of course, this makes sure that a simplex grows inward instead of outward, which we may also want to test).
+We chose three because this is an easy number to rank, and we found 4 to give a high overhead in a 1-D test case.
+
+#### Laser cutter settings
+
+A participant determines the settings for the engraver.
+For vector cutting, we predetermine the appropriate settings to be (Power: 60%, Speed: 6%, PPI: 1000).
+We also set the system setting that the cutter doesn't home back to zero after each iteration.
+The cut is frequently clean, without causing too much combustion of material.
 
 ### Expected Outcome
 
@@ -130,6 +143,37 @@ Analysis of the interaction experience
 * Most engaged: [SL, SA, AL]
 
 ## Notes
+
+### Observations
+
+#### Patterns
+
+##### Pen and paper to keep track of the configurations
+
+* P1 and P2
+
+##### A desire to get a good mental model
+
+* P2
+
+#### Participant 1: Hezheng
+
+* Seemed interested in exploring the space of possible configurations by manually tweaking the parameters
+* The simplex got stuck with his ratings.  It had nothing better to propose by the 17th example
+
+#### Participant 2: Kristin
+
+* Wants us to figure out people's perception of the linearity / relationships in the space of configurations.  Then map back from people's perceptions of the space onto the machine's perception to allow better exploration
+    * For example, how would people insert individual points on a line of possible values (or a continuum)
+* Simplex felt like a random walk
+* Frustrated that she didn't get to keep her favorite points (though admittedly, we should do this?)
+* Kristin had some serious problems with the user interface
+    * Not being able to edit the text field in order to set the value of a slider
+    * Using swap sort instead of insertion sort
+
+#### Hunches
+
+* Iteration seemed much faster with the simplex-based space guidance.  P2 made it through about 2x as many examples in the same time.  Presumably because she did not have to reason about how her choices affected the engraving
 
 ### Limitations
 

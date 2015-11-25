@@ -72,6 +72,8 @@ The default engraving settings were (Power: 20.4%, Speed: 24%, PPI: 500)
 * Probably for our optimization process, we should set several conditions: examples include try to get a low-res (dashed) engraving, an engraving that with thick lines that did not fall through, an engraving with a smooth but very light line, a fine but dark line that's not charred
 * You can load and save laser cutter parameters.  Maybe there's a way to automate this so that I can run a lot of examples at once.
 * For the final experiment, we may want to distance these Os even more.  Flames from some cuts appear to char the board near neighboring cuts!
+* Lower speeds took a noticably longer amount of time.  I did not record the difference in times.
+* For the resolutions of 10 and 32 PPI, the bottom row (max power) looked like it automatically booted up the resolution to the maximum resolution.  Is this an eccentricity in the printer behavior?
 
 ### Apparatus 1: Fitting surfaces to random sampling
 
@@ -95,8 +97,6 @@ The Gaussian also fits better with the second round of ratings.
 We find that between subject-ratings of examples is high.
 
 ## Notes
-
-### Observations
 
 ### Errata
 
