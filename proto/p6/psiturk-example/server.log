@@ -1,0 +1,161 @@
+2015-11-25 13:40:16,012 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+[2015-11-25 13:40:16 -0800] [68113] [ERROR] Exception in worker process:
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 507, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 118, in init_process
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python2.7/site-packages/psiturk/experiment_server.py", line 49, in load
+    return util.import_app("psiturk.experiment:app")
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/util.py", line 355, in import_app
+    __import__(module)
+  File "/usr/local/lib/python2.7/site-packages/psiturk/experiment.py", line 85, in <module>
+    init_db()
+  File "/usr/local/lib/python2.7/site-packages/psiturk/db.py", line 23, in init_db
+    Base.metadata.create_all(bind=engine)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/schema.py", line 3687, in create_all
+    tables=tables)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1856, in _run_visitor
+    conn._run_visitor(visitorcallable, element, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1481, in _run_visitor
+    **kwargs).traverse_single(element)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/visitors.py", line 121, in traverse_single
+    return meth(obj, **kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 730, in visit_metadata
+    _is_metadata_operation=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/visitors.py", line 121, in traverse_single
+    return meth(obj, **kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 764, in visit_table
+    include_foreign_key_constraints=include_foreign_key_constraints
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 914, in execute
+    return meth(self, multiparams, params)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 68, in _execute_on_connection
+    return connection._execute_ddl(self, multiparams, params)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 968, in _execute_ddl
+    compiled
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1146, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1341, in _handle_dbapi_exception
+    exc_info
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 199, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1139, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py", line 450, in do_execute
+    cursor.execute(statement, parameters)
+OperationalError: (sqlite3.OperationalError) table turkdemo already exists [SQL: u'\nCREATE TABLE turkdemo (\n\tuniqueid VARCHAR(128) NOT NULL, \n\tassignmentid VARCHAR(128) NOT NULL, \n\tworkerid VARCHAR(128) NOT NULL, \n\thitid VARCHAR(128) NOT NULL, \n\tipaddress VARCHAR(128), \n\tbrowser VARCHAR(128), \n\tplatform VARCHAR(128), \n\tlanguage VARCHAR(128), \n\tcond INTEGER, \n\tcounterbalance INTEGER, \n\tcodeversion VARCHAR(128), \n\tbeginhit DATETIME, \n\tbeginexp DATETIME, \n\tendhit DATETIME, \n\tbonus FLOAT, \n\tstatus INTEGER, \n\tdatastring TEXT(4294967295), \n\tPRIMARY KEY (uniqueid)\n)\n\n']
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/arbiter.py", line 507, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/workers/base.py", line 118, in init_process
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python2.7/site-packages/psiturk/experiment_server.py", line 49, in load
+    return util.import_app("psiturk.experiment:app")
+  File "/usr/local/lib/python2.7/site-packages/gunicorn/util.py", line 355, in import_app
+    __import__(module)
+  File "/usr/local/lib/python2.7/site-packages/psiturk/experiment.py", line 85, in <module>
+    init_db()
+  File "/usr/local/lib/python2.7/site-packages/psiturk/db.py", line 23, in init_db
+    Base.metadata.create_all(bind=engine)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/schema.py", line 3687, in create_all
+    tables=tables)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1856, in _run_visitor
+    conn._run_visitor(visitorcallable, element, **kwargs)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1481, in _run_visitor
+    **kwargs).traverse_single(element)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/visitors.py", line 121, in traverse_single
+    return meth(obj, **kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 730, in visit_metadata
+    _is_metadata_operation=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/visitors.py", line 121, in traverse_single
+    return meth(obj, **kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 764, in visit_table
+    include_foreign_key_constraints=include_foreign_key_constraints
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 914, in execute
+    return meth(self, multiparams, params)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/sql/ddl.py", line 68, in _execute_on_connection
+    return connection._execute_ddl(self, multiparams, params)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 968, in _execute_ddl
+    compiled
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1146, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1341, in _handle_dbapi_exception
+    exc_info
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 199, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1139, in _execute_context
+    context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py", line 450, in do_execute
+    cursor.execute(statement, parameters)
+OperationalError: (sqlite3.OperationalError) table turkdemo already exists [SQL: u'\nCREATE TABLE turkdemo (\n\tuniqueid VARCHAR(128) NOT NULL, \n\tassignmentid VARCHAR(128) NOT NULL, \n\tworkerid VARCHAR(128) NOT NULL, \n\thitid VARCHAR(128) NOT NULL, \n\tipaddress VARCHAR(128), \n\tbrowser VARCHAR(128), \n\tplatform VARCHAR(128), \n\tlanguage VARCHAR(128), \n\tcond INTEGER, \n\tcounterbalance INTEGER, \n\tcodeversion VARCHAR(128), \n\tbeginhit DATETIME, \n\tbeginexp DATETIME, \n\tendhit DATETIME, \n\tbonus FLOAT, \n\tstatus INTEGER, \n\tdatastring TEXT(4294967295), \n\tPRIMARY KEY (uniqueid)\n)\n\n']
+2015-11-25 13:40:16,125 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:16,545 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:16,548 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:16,579 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,002 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,010 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,147 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,212 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,281 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,291 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,308 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,365 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,427 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,447 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:40:17,466 /usr/local/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,355 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,461 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,719 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,743 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,766 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:49,993 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,196 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,347 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,374 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,437 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,484 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,501 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,528 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,588 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,591 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,626 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:43:50,651 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:02,527 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:02,559 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:02,694 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:02,828 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:02,972 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,146 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,313 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,548 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,560 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,563 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,583 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,594 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,598 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,654 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,688 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,709 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-25 13:45:03,732 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+[2015-11-27 15:07:36 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68645)
+2015-11-27 15:07:52,102 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 15:07:52,102 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 15:07:52,159 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 15:07:54,499 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:87248)
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68650)
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68652)
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68653)
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68655)
+[2015-11-27 21:48:00 -0800] [68641] [CRITICAL] WORKER TIMEOUT (pid:68659)
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,571 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
+2015-11-27 21:48:02,572 /Users/andrew/Sidequests/hri/fabexample/proto/p6/venv/lib/python2.7/site-packages/psiturk/psiturk_js/psiturk.js
