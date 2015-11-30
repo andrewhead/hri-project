@@ -8,7 +8,7 @@ approve_requirement = 95
 contact_email_on_error = openairandrew@gmail.com
 ad_group = A Test Task
 psiturk_keywords = test
-organization_name =UC Berkeley
+organization_name = UC Berkeley
 browser_exclude_rule = MSIE, mobile, tablet
 
 [Database Parameters]
@@ -16,12 +16,13 @@ database_url = sqlite:///participants.db
 table_name = turkdemo
 
 [Server Parameters]
-host = localhost
+# host = 0.0.0.0
+host = 127.0.0.1
 port = 22362
 cutoff_time = 30
 logfile = server.log
 loglevel = 2
-debug = true
+debug = false
 login_username = examplename
 login_pw = examplepassword
 threads = auto

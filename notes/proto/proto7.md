@@ -57,6 +57,16 @@ The front-end supports the following tasks:
 6. #5 should be served up right after #4.  #4 should be served up right after #5.
 7. Once the model has converged, they are shown text that says the system has converged
 
+### Adding graphics
+
+We want to enable one to use our front-end with images.
+Some of the following commands were helpful for transitioning our images from [Evaluation 1](../eval/eval1) to this prototype.
+In particular, there were some thing (~1 pixel) slices left over from splitting the images.
+
+    rm 1000ppi_{25,26,27,28,29}.png
+    # We manually removed 316ppi_{05,11,17,23,29}.png.
+    i=0; for f in 316ppi_*; do mv $f 316ppi_`printf "%02d" $i`.png; i=$((i + 1)); echo $i ; done
+
 ### Expected Outcome
 
 Nelder-Mead works pretty well without noise.
