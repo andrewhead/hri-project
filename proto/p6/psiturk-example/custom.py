@@ -18,6 +18,8 @@ from json import loads
 # from psiturk.db import init_db
 # from json import dumps
 
+from algorithms.simplex import Simplex
+
 # load the configuration options
 config = PsiturkConfig()
 config.load_config()
@@ -81,6 +83,58 @@ def list_my_data():
         abort(404)
 
 
+def get_cut_image_name(power, speed, ppi):
+
+    SPEED_LEVEL_COUNT = 5
+    PPI_LEVELS = [10, 32, 100, 316, 1000]
+
+    row = int(round(power))
+    col = int(round(speed))
+    index = row * (SPEED_LEVEL_COUNT) + col
+
+    basename = "{ppi}ppi_{index:02}.png".format(
+        ppi=PPI_LEVELS[int(round(ppi))],
+        index=index
+    )
+    path = "static/images/cuts/" + basename
+    return path
+
+
+@custom_code.route('/rank', methods=['GET'])
+def home():
+    exemplar_index = int(request.args.get('exemplar', 1))
+    ppi = exemplar_index / 25
+    power = (exemplar_index - (ppi * 25)) / 5
+    speed = exemplar_index % 5
+    return render_template('rank.html', img=get_cut_image_name(power, speed, ppi))
+
+
+@custom_code.route('/step', methods=['GET'])
+def step():
+
+    points = loads(request.args['points'])
+    bounds_json = request.args.get('bounds', None)
+    bounds = loads(bounds_json) if bounds_json is not None else None
+    get_images = bool(request.args.get('get_images', None))
+
+    if len(points) > 0:
+        simplex = Simplex()
+        new_points = simplex.step(points, bounds)
+    else:
+        new_points = [
+            {'value': [0, 0, 0], 'type': 'vertex'},
+            {'value': [0, 0, 4], 'type': 'vertex'},
+            {'value': [0, 4, 0], 'type': 'vertex'},
+            {'value': [4, 0, 0], 'type': 'vertex'},
+        ]
+
+    for p in new_points:
+        if get_images and 'img' not in p:
+            p['img'] = get_cut_image_name(*p['value'])
+
+    return jsonify(**{'points': new_points})
+
+
 '''
 # example computing bonus
 '''
@@ -113,5 +167,6 @@ def compute_bonus():
         db_session.commit()
         resp = {"bonusComputed": "success"}
         return jsonify(**resp)
-    except:
+    except Exception as e:
+        current_app.logger.info("Error: %s", repr(e))
         abort(404)  # again, bad to display HTML, but...

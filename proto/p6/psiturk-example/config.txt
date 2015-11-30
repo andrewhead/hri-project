@@ -21,7 +21,7 @@ host = 127.0.0.1
 port = 22362
 cutoff_time = 30
 logfile = server.log
-loglevel = 2
+loglevel = 0
 debug = false
 threads = auto
 
