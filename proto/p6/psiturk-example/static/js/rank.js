@@ -1,11 +1,30 @@
-/*global d3, $*/
+/*global d3, $, window*/
+/*global PsiTurk, uniqueId, adServerLoc, mode, finish, replaceBody*/
 /*jslint unparam:true */
 
 /* GLOBALS */
 
 var MODE = '2D';
+var ABORT_ITERATIONS = 10;
 var iterationIndex = 1;
 var exampleIndex = 1;
+
+var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
+var pages = [
+    "instructions/instruct-1.html",
+    "instructions/instruct-2.html",
+    "instructions/instruct-3.html",
+    "instructions/instruct-ready.html",
+    "stage.html",
+    "postquestionnaire.html"
+];
+var instructionPages = [
+    "instructions/instruct-1.html",
+    "instructions/instruct-2.html",
+    "instructions/instruct-3.html",
+    "instructions/instruct-ready.html"
+];
+psiTurk.preloadPages(pages);
 
 /* HELPERS */
 
@@ -91,26 +110,6 @@ function move(selection, x, y) {
 }
 
 /* DISPLAY THE GOAL */
-
-if (MODE === '1D') {
-
-    d3.select('#simplex_exemplar_img').remove();
-
-    var exemplarSvg = d3.select('#exemplar_cont')
-      .append('svg')
-      .attr('width', 200)
-      .attr('height', 200);
-
-    exemplarSvg.selectAll('rect')
-      .data([{'value': [128]}])
-      .enter()
-        .append('rect')
-          .attr('width', 200)
-          .attr('height', 200)
-          .call(appearance);
-          // .style('fill', appearance);
-
-}
 
 /* MANIPULATE THE EXAMPLES */
 
@@ -227,39 +226,139 @@ function loadExamples(points) {
     return boxes;
 }
 
-var boxes;
+// REUSE: from default psiTurk task.js
+var Questionnaire = function() {
 
-if (MODE === '1D') {
-    boxes = loadExamples([
-        {value: [255]},
-        {value: [100]}, 
-        {value: [32]}
-    ]);
-} else {
-    $.get('/step', {
-        'points': JSON.stringify([]),
-        'iteration': iterationIndex,
-        'get_images': true,
-    }, function(data) {
-        loadExamples(data.points);   
-    });
-}
+	var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. This might happen if you lose your internet connection. Press the button to resubmit.</p><button id='resubmit'>Resubmit</button>";
 
-$('#upload_ranking_butt').click(function() {
+	var record_responses = function() {
+		psiTurk.recordTrialData({
+            phase:'postquestionnaire',
+            status:'submit'
+        });
+		$('textarea').each(function(i, val) {
+			psiTurk.recordUnstructuredData(this.id, this.value);
+		});
+		$('select').each(function(i, val) {
+			psiTurk.recordUnstructuredData(this.id, this.value);		
+		});
+	};
 
-    var data = d3.selectAll('#rank_bar rect').data();
+	var prompt_resubmit = function() {
+		replaceBody(error_message);
+		$("#resubmit").click(resubmit);
+	};
 
-    var query = {
-        'iteration': iterationIndex,
-        'points': JSON.stringify(data),
-    };
-    if (MODE !== '1D') {
-        query.bounds = JSON.stringify([[0, 4], [0, 4], [0, 4]]);
-        query.get_images = true;
+	var resubmit = function() {
+		replaceBody("<h1>Trying to resubmit...</h1>");
+		var reprompt = setTimeout(prompt_resubmit, 10000);
+		psiTurk.saveData({
+			success: function() {
+			    clearInterval(reprompt); 
+                psiTurk.computeBonus('compute_bonus', function() { 
+                    new Questionnaire(); 
+                }); 
+			}, 
+			error: prompt_resubmit
+		});
+	};
+
+	// Load the questionnaire snippet 
+	psiTurk.showPage('postquestionnaire.html');
+	psiTurk.recordTrialData({'phase':'postquestionnaire', 'status':'begin'});
+	
+	$("#next").click(function () {
+	    record_responses();
+	    psiTurk.saveData({
+            success: function(){
+                psiTurk.computeBonus('compute_bonus', function() { 
+                	psiTurk.completeHIT(); // when finished saving compute bonus, the quit
+                }); 
+            }, 
+            error: prompt_resubmit});
+	});
+    
+	
+};
+
+function init() {
+
+    if (MODE === '1D') {
+        loadExamples([
+            {value: [255]},
+            {value: [100]}, 
+            {value: [32]}
+        ]);
+    } else {
+        $.get('/step', {
+            'points': JSON.stringify([]),
+            'iteration': iterationIndex,
+            'get_images': true,
+        }, function(data) {
+            loadExamples(data.points);   
+        });
     }
 
-    $.get('/step', query, function(data) {
-        loadExamples(data.points);
+    if (MODE === '1D') {
+        d3.select('#simplex_exemplar_img').remove();
+        var exemplarSvg = d3.select('#exemplar_cont')
+          .append('svg')
+          .attr('width', 200)
+          .attr('height', 200);
+        exemplarSvg.selectAll('rect')
+          .data([{'value': [128]}])
+          .enter()
+            .append('rect')
+              .attr('width', 200)
+              .attr('height', 200)
+              .call(appearance);
+    }
+
+    $('#upload_ranking_butt').click(function() {
+        var data = d3.selectAll('#rank_bar rect').data();
+        psiTurk.recordTrialData({
+            phase: "ranking",
+            points: data,
+        });
+        psiTurk.saveData();
+        var query = {
+            'iteration': iterationIndex,
+            'points': JSON.stringify(data),
+        };
+        if (MODE !== '1D') {
+            query.bounds = JSON.stringify([[0, 4], [0, 4], [0, 4]]);
+            query.get_images = true;
+        }
+        $.get('/step', query, function(data) {
+            loadExamples(data.points);
+            if (iterationIndex > ABORT_ITERATIONS) {
+                $('#abort_butt').show();
+            }
+        });
     });
 
+    $('#abort_butt').click(function() {
+        var data = d3.selectAll('#rank_bar rect').data();
+        psiTurk.recordTrialData({
+            phase: "abort ranking",
+            points: data,
+        });
+        psiTurk.saveData({
+            success: function() {
+                new Questionnaire(); 
+            }
+        });
+    });
+
+}
+
+
+$(window).load( function(){
+    psiTurk.doInstructions(
+    	instructionPages, // a list of pages you want to display in sequence
+    	function() { 
+            psiTurk.showPage('stage.html');
+            init();
+        }
+    );
 });

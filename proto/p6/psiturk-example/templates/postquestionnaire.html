@@ -1,61 +1,100 @@
 <div id="container-questionnaire">
     <h1>Task Complete</h1>
-
     <hr>
-
-    <p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
-
+    <p>You are finished!  Thank you for your contributions to this work.  You will be eligible for full payment once you answer the following questions.</p>
     <div class="instructions well">
-
         <form id="postquiz" action="debrief" method="post">
 
-
-            <!-- beginning of a question -->
             <div class="row question">
                 <div class="col-md-8">
-                    On a scale of 1-10 (where 10 is the most engaged), please rate how <b>ENGAGING</b> you found the learning task:
+                    I trusted the computer to make the right decision about what example to show me next.
                 </div>
                 <div class="col-md-4">
-                    <select id="engagement" name="engagement">
-                        <option value="10">10 - Very engaging</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5" SELECTED>5 - Moderately</option>
+                    <select id="trust" name="trust">
+                        <option value="5">5 - Strongly Agree</option>
                         <option value="4">4</option>
-                        <option value="3">3</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
                         <option value="2">2</option>
-                        <option value="1">1</option>
-                        <option value="0">0 - Not engaged</option>
+                        <option value="1">1 - Strongly Disagree</option>
                     </select>
                 </div>
             </div>
-            <!-- end of a question -->
 
-
-            <!-- beginning of a question -->
             <div class="row question">
                 <div class="col-md-8">
-                    On a scale of 1-10 (where 10 is the most difficult), please rate how <b>DIFFICULT</b> you found the learning task:
+                    I don't understand why the computer decided to show me the examples it did.  Its choices didn't make sense.
                 </div>
                 <div class="col-md-4">
-                    <select id="difficulty" name="difficulty">
-                        <option value="10">10 - Very difficult</option>
-                        <option value="9">9</option>
-                        <option value="8">8</option>
-                        <option value="7">7</option>
-                        <option value="6">6</option>
-                        <option value="5" SELECTED>5 - Moderately difficult</option>
+                    <select id="sense" name="sense">
+                        <option value="5">5 - Strongly Agree</option>
                         <option value="4">4</option>
-                        <option value="3">3</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
                         <option value="2">2</option>
-                        <option value="1">1</option>
-                        <option value="0">0 - Not difficult at all</option>
+                        <option value="1">1 - Strongly Disagree</option>
                     </select>
                 </div>
             </div>
-            <!-- end of a question -->
+
+            <div class="row question">
+                <div class="col-md-8">
+                    The computer's guesses improved over time.
+                </div>
+                <div class="col-md-4">
+                    <select id="improved" name="improved">
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
+                        <option value="2">2</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm picking examples was intelligent.
+                </div>
+                <div class="col-md-4">
+                    <select id="intelligent" name="intelligent">
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
+                        <option value="2">2</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm accurately perceived what my goal was.
+                </div>
+                <div class="col-md-4">
+                    <select id="perception" name="perception">
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
+                        <option value="2">2</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm was making random choices.
+                </div>
+                <div class="col-md-4">
+                    <select id="random" name="random">
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4</option>
+                        <option value="3" SELECTED>3 - Neutral</option>
+                        <option value="2">2</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+
         </form>
     </div>
 
@@ -74,6 +113,5 @@
             </div>
         </div>
     </div>
-
 
 </div>

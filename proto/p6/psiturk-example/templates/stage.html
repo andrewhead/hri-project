@@ -1,8 +1,77 @@
-<div id="container-exp">
-	<div id="trial">
-		<h1>Respond Quickly!</h1>
-		<p>What color is this word?</p>
-		<div id="stim"></div>
-		<div id="query"></div>
-	</div>
-</div>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Control by Example</title>
+        <link rel='stylesheet' href='/static/css/main.css' />
+    </head>
+    <body>
+        <div id='main_cont' class='cols'>
+            <div id='instruct_col' class='instruct_mini col2 instructions well'>
+
+                <h4>Instructions</h4>
+
+                <p>
+                In this activity, you will guide a computer algorithm to find a target image.
+                The computer will show you example images.
+                Your will compare these examples.
+                After you compare them, the computer will suggest new examples for comparison.
+                </p>
+
+                <p>
+                Each new set of examples from the computer will get you closer to the target image, based on your comparisons.
+                Your job is to give accurate comparison judgments so that the computer rapidly finds the right target image.
+                </p>
+
+                <h6>To rank the examples, do the following.</h6>
+
+                <p>
+                There will be a row of examples on the page.
+                Drag the examples to order them from <b>best</b> to <b>worst</b>.
+                </p>
+
+                <p>
+                When you're happy with the ordering, click <b>I Have Sorted the Images</b>.
+                The algorithm will fetch more examples for comparison.
+                </p>
+
+                <p>
+                Eventually, the algorithm will give you an image identical to the target.
+                When this happens, mark this image as the best.
+                Then click <b>Goal Achieved</b>.
+                </p>
+
+                <p>
+                In some cases, after many comparisons, the algorithm may not reach the goal.
+                If the algorithm seems to "get stuck", click on the <b>Algorithm Got Stuck</b> button to end the task.
+                This button will only appear after 10 comparisons.
+                You will still get compensated for this HIT if you click this button.
+                </p>
+
+            </div>
+            <div id='main_col' class='col2'>
+                <h1 id='main_header'>Goal</h1>
+                <div id='exemplar_cont'>
+                    <img id='simplex_exemplar_img' alt='goal' src="/static/images/cuts/10ppi_17.png" />
+                </div>
+                <div id='rank_cont'>
+                    <h2>Sort images by how closely they resemble the goal image.</h2>
+                    <div id='rank_panel'>
+                        <div class='ref_label'>
+                            <p>Best</p>
+                        </div>
+                        <div id='rank_bar'></div>
+                        <div class='ref_label'>
+                            <p>Worst</p>
+                        </div>
+                    </div>
+                </div>
+                <div id='upload_ranking_cont'>
+                    <button id='upload_ranking_butt'>I Have Sorted the Images</button>
+                </div>
+                <div id='abort_cont'>
+                    <button id='abort_butt'>Images Aren't Getting Any Better</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

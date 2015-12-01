@@ -1,0 +1,58 @@
+<div id="container-instructions">
+
+	<h1>Instructions</h1>
+
+	<hr>
+
+	<div class="instructions well">
+
+        <p>
+        To rank the examples, do the following.
+        There will be a row of examples on the page.
+        Drag the examples to order them from <b>best</b> to <b>worst</b>.
+        </p>
+
+        <p>
+        When you're happy with the ordering, click <b>Done Sorting</b>.
+        The algorithm will fetch more examples for comparison.
+        </p>
+
+        <p>
+        Eventually, the algorithm will give you an image identical to the target.
+        When this happens, mark this image as the best.
+        Then click <b>Goal Achieved</b>.
+        </p>
+
+        <p>
+        In some cases, after many comparisons, the algorithm may not reach the goal.
+        If the algorithm seems to "get stuck", click on the <b>Algorithm Got Stuck</b> button to end the task.
+        This button will only appear after 10 comparisons.
+        You will still get compensated for this HIT if you click this button.
+        </p>
+
+	    <script type="text/javascript">
+	    //console.log(psiTurk.getInstructionIndicator())
+	    </script>
+
+	</div>
+
+	<hr>
+
+    <div class="instructionsnav">
+        <div class="row">
+            <div class="col-xs-2">
+                <button type="button" id="prev" value="prev" class="btn btn-primary btn-lg previous">
+                <span class="glyphicon glyphicon-arrow-left"></span> Previous
+                </button>
+            </div>
+            <div class="col-xs-8">
+            </div>
+            <div class="col-xs-2">
+                <button type="button" id="next" value="next" class="btn btn-primary btn-lg continue">
+                Next <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
