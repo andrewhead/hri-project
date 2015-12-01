@@ -1,5 +1,5 @@
 /*global d3, $, window*/
-/*global PsiTurk, uniqueId, adServerLoc, mode, finish, replaceBody*/
+/*global PsiTurk, uniqueId, adServerLoc, mode, replaceBody*/
 /*jslint unparam:true */
 
 /* GLOBALS */
@@ -16,7 +16,9 @@ var pages = [
     "instructions/instruct-3.html",
     "instructions/instruct-ready.html",
     "stage.html",
-    "postquestionnaire.html"
+    "aborted.html",
+    "success.html",
+    "postquestionnaire.html",
 ];
 var instructionPages = [
     "instructions/instruct-1.html",
@@ -281,6 +283,13 @@ var Questionnaire = function() {
 	
 };
 
+function finish(pageName) {
+    psiTurk.showPage(pageName);
+    $('#next').click(function() {
+        new Questionnaire();
+    });
+}
+
 function init() {
 
     if (MODE === '1D') {
@@ -321,6 +330,16 @@ function init() {
             points: data,
         });
         psiTurk.saveData();
+
+        if (data[0].img === $('#exemplar_img').attr('src')) {
+            psiTurk.recordTrialData({
+                phase: "final ranking",
+                points: data,
+            });
+            psiTurk.saveData();
+            finish("success.html");
+        }
+
         var query = {
             'iteration': iterationIndex,
             'points': JSON.stringify(data),
@@ -335,6 +354,7 @@ function init() {
                 $('#abort_butt').show();
             }
         });
+
     });
 
     $('#abort_butt').click(function() {
@@ -345,7 +365,7 @@ function init() {
         });
         psiTurk.saveData({
             success: function() {
-                new Questionnaire(); 
+                finish("aborted.html");
             }
         });
     });
