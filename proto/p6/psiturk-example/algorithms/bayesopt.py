@@ -109,19 +109,30 @@ def newton_rhapson(x, f0, comparisons, kernelfunc, Hfunc, gfunc, sigma, maxiter=
     return f, Cmap
 
 
+c_products = {}
+
+
 def c_pdf_cdf_term(z):
-    # The product in the paper is a typo.  This is the right way.
-    # See also Eric's implementation at
-    # https://github.com/misterwindupbird/IBO/blob/master/ego/gaussianprocess/__init__.py
-    phi = N.pdf(z)
-    Phi = N.cdf(z)
-    if np.isclose(N.cdf(z), 0.0):
-        return 0.0
-    return (np.power(phi, 2) / np.power(Phi, 2)) + (phi * z / Phi)
+    if z not in c_products:
+        # The product in the paper is a typo.  This is the right way.
+        # See also Eric's implementation at
+        # https://github.com/misterwindupbird/IBO/blob/master/ego/gaussianprocess/__init__.py
+        phi = N.pdf(z)
+        Phi = N.cdf(z)
+        if np.isclose(Phi, 0.0):
+            c_products[z] = 0.0
+        else:
+            c_products[z] = (np.power(phi, 2) / np.power(Phi, 2)) + (phi * z / Phi)
+    return c_products[z]
+
+
+z_cached = {}
 
 
 def compute_z(fr, fc, sigma):
-    return (fr - fc) / (np.sqrt(2.0) * sigma)
+    if (fr, fc, sigma) not in z_cached:
+        z_cached[(fr, fc, sigma)] = (fr - fc) / (np.sqrt(2.0) * sigma)
+    return z_cached[(fr, fc, sigma)]
 
 
 def h(comparison, xi):
@@ -133,15 +144,23 @@ def h(comparison, xi):
         0.0
 
 
+cdfs = {}
+divisions = {}
+
+
 def b_summand(f, j, comparison, sigma):
     ri, ci = comparison
     fr = f[ri][0]
     fc = f[ci][0]
     z = compute_z(fr, fc, sigma)
     hi = h(comparison, j)
-    if np.isclose(N.cdf(z), 0.0):
+    if z not in cdfs:
+        cdfs[z] = N.cdf(z)
+    if np.isclose(cdfs[z], 0.0):
         return 0.0
-    summand = (N.pdf(z) / N.cdf(z)) * hi
+    if z not in divisions:
+        divisions[z] = N.pdf(z) / N.cdf(z)
+    summand = divisions[z] * hi
     return summand
 
 
@@ -192,12 +211,17 @@ def c_summand(f, m, n, comparison, sigma):
     return hm * hn * cdf_pdf_term
 
 
-def c_m_n(f, m, n, comparisons, sigma):
+def c_m_n(f, m, n, comparisons, sigma, memo={}):
     sum_ = 0
     num_comp = comparisons.shape[0]
     for ci in range(num_comp):
         comp = comparisons[ci]
-        summand = c_summand(f, m, n, comp, sigma)
+        compr, compc = comp.tolist()
+        if (m, n, compr, compc) not in memo:
+            summand = c_summand(f, m, n, comp, sigma)
+            memo[(m, n, compr, compc)] = summand
+        else:
+            summand = memo[(m, n, compr, compc)]
         sum_ += summand
     c = sum_ / (2 * sigma * sigma)
     return c
@@ -206,10 +230,16 @@ def c_m_n(f, m, n, comparisons, sigma):
 def compute_C(f, comparisons, sigma):
     # We assume we have the same number of 'f' as we do of 'x'
     C = []
+    memo = {}
     for fi in range(len(f)):
         c_row = []
         for fj in range(len(f)):
-            c_entry = c_m_n(f, fi, fj, comparisons, sigma)
+            if (fi, fj) not in memo:
+                c_entry = c_m_n(f, fi, fj, comparisons, sigma, memo)
+                memo[(fi, fj)] = c_entry
+                memo[(fj, fi)] = c_entry
+            else:
+                c_entry = memo[(fi, fj)]
             c_row.append(c_entry)
         C.append(c_row)
     C_np = np.array(C)
