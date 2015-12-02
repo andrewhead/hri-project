@@ -788,6 +788,30 @@ class AcquisitionMaximizationTest(NpArrayTestCase):
         )
         self.assertTrue(next_point[0] > -.4)
 
+    def test_select_point_to_explore_within_bounds_function(self):
+        next_point = acquire(
+            x=a([
+                [-0.75],
+                [-0.4],
+            ]),
+            # See above for the source of fmap and Cmap values
+            fmap=a([
+                [0.03254087],
+                [-0.03254087],
+            ]),
+            Cmap=a([
+                [0.07894662, -0.07894662],
+                [-0.07894662, 0.07894662],
+            ]),
+            bounds=a([
+                [-2.0, 2.0],
+            ]),
+            kernelfunc=default_kernel,
+            extrabounds=lambda p: p[0] > -1.0 and p[0] < 1.0,
+        )
+        self.assertTrue(next_point[0] > -.4)
+        self.assertTrue(next_point[0] < 1.0)
+
     def test_select_point_to_explore_in_two_dimensions(self):
         '''
         This test case just runs code on a multi-dimensional input dataset.

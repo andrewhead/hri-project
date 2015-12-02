@@ -12,34 +12,24 @@ from functools import partial
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
-'''
-In We will have these methods for predicting the value at a point:
-Method | Given | Return
-get_f_map | f0[n, 1], Hessian method, gradient method | f[n, 1]
-get_distinct_x | comparisons[m, 2] | x[n, 1]
-kernel | x1, x2 | value
-kernel_vector | kernel(), x[n, 1], xnew | products[n, 1]
-kernel_matrix | kernel(), x[n, 1] | products[n, n]
-C | f[n, 1], comparisons[m, 2], x[n, 1], sigma_noise | C[n, n]
-H | f[n, 1], comparisons[m, 2], x[n, 1], sigma_noise | H[n, n]
-b | f[n, 1], comparisons[m, 2], x[n, 1], sigma_noise | b[n, 1]
-g | kernel(), f[n, 1], comparisons[m, 2], x[n, 1], sigma_noise | g[n, 1]
-predict | kernel(), get_f_map(), f0 | y
-
-And these methods for optimizing the selection of the next point:
-sigma | kernel(), fmap[n, 1], comparisons[m, 2], x[n, 1], sigma_noise | variance
-expectation | kernel(), fmap[n, 1], x[n, 1], newx | ei
-next_point | expectation(), sigma(), best_observed  | x
-'''
-
-
 N = scipy.stats.norm()
 
 
-def acquire(x, fmap, Cmap, bounds, kernelfunc):
+def acquire(x, fmap, Cmap, bounds, kernelfunc, extrabounds=lambda p: True):
+    '''
+    bounds: a numpy array of constraints on each dimension, of the form:
+        [
+            [lower_bound, upper_bound] # dimension 1,
+            [lower_bound, upper_bound] # dimension 2,
+            ...
+            [lower_bound, upper_bound] # dimension k,
+        ]
+    extrabounds: an optional function for determining whether a point falls within bounds,
+        using more complex rules than a range of numbers.  The extrabounds function
+        should return True if a point is within bounds, and False if the point is outside of it.
+    '''
 
-    def cost_func(xnew):
-
+    def cost_func(xnew, bounds, extrabounds):
         # Compute the expected value and variance
         f_exp = predict_f(x, fmap, xnew, kernelfunc)
         sigma_exp = predict_sigma(x, fmap, Cmap, xnew, kernelfunc)
@@ -47,9 +37,12 @@ def acquire(x, fmap, Cmap, bounds, kernelfunc):
             return 0.0
 
         # If this point falls outside of bounds, give it a low score
+        BOUNDS_COST = 10.0
         for dimi in range(bounds.shape[0]):
             if xnew[dimi] < bounds[dimi][0] or xnew[dimi] > bounds[dimi][1]:
-                return 10.0
+                return BOUNDS_COST
+        if not extrabounds(xnew):
+            return BOUNDS_COST
 
         # Compute the expected improvement at this point
         dist = f_exp - np.max(fmap)
@@ -58,7 +51,7 @@ def acquire(x, fmap, Cmap, bounds, kernelfunc):
         return -ei
 
     avgs = np.average(bounds, axis=1)
-    res = minimize(cost_func, avgs, method='powell')
+    res = minimize(cost_func, avgs, args=(bounds, extrabounds,), method='powell')
     xnew = res.x
     if xnew.shape == ():
         xnew = np.array([xnew])

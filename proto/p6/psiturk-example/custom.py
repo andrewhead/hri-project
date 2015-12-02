@@ -13,6 +13,7 @@ from json import loads
 from functools import partial
 import numpy as np
 import cProfile
+import itertools
 
 from algorithms.simplex import Simplex
 from algorithms.bayesopt import newton_rhapson, acquire, default_kernel, compute_H, compute_g
@@ -50,6 +51,33 @@ def bayesopt():
     ])
     KERNELFUNC = partial(default_kernel, a=-1)
 
+    # Create extra bounds to rule out configurations that burned
+    within_bounds = {}
+    BURNING_CONFIGURATIONS = [
+        (4, 0, 0),
+        (4, 1, 0),
+        (4, 0, 1),
+        (4, 1, 1),
+        (4, 1, 1),
+        (3, 0, 2),
+        (4, 0, 2),
+        (4, 1, 2),
+        (3, 0, 3),
+        (4, 0, 3),
+        (4, 1, 3),
+        (3, 0, 4),
+        (4, 0, 4),
+        (4, 1, 4),
+    ]
+    keys = [_ for _ in itertools.product(range(5), range(5), range(5))]
+    for k in keys:
+        within_bounds[k] = (k not in BURNING_CONFIGURATIONS)
+
+    def extrabounds(p):
+        rounded = np.round(p).astype('int')
+        rounded_key = tuple(rounded)
+        return within_bounds[rounded_key]
+
     # If no parameters are given, initialize the data
     if f.shape == (0,):
         x = np.array([
@@ -65,16 +93,11 @@ def bayesopt():
     # Predict the next point for comparison
     else:
         prof = cProfile.Profile()
-        '''
-        f, Cmap = newton_rhapson(
-            x, f, comparisons, KERNELFUNC,
-            compute_H, compute_g, SIGMA, maxiter=100)
-        '''
         f, Cmap = prof.runcall(
             newton_rhapson, x, f, comparisons, KERNELFUNC,
             compute_H, compute_g, SIGMA, maxiter=10)
         prof.dump_stats('code.profile')
-        xnew = acquire(x, f, Cmap, BOUNDS, KERNELFUNC)
+        xnew = acquire(x, f, Cmap, BOUNDS, KERNELFUNC, extrabounds)
         best_f_i = np.argmax(f)
         xbest = x[best_f_i]
 
