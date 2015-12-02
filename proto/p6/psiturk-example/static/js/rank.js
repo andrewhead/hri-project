@@ -4,7 +4,8 @@
 
 /* GLOBALS */
 
-var MODE = '2D';
+var OPTIMIZE_MODE = 'BayesOpt';
+var DIM_MODE = '2D';
 var ABORT_ITERATIONS = 10;
 var iterationIndex = 1;
 var exampleIndex = 1;
@@ -32,15 +33,13 @@ psiTurk.preloadPages(pages);
 
 // REUSE: http://stackoverflow.com/questions/14167863/how-can-i-bring-a-circle-to-the-front-with-d3
 d3.selection.prototype.moveToFront = function() {
-
   return this.each(function(){
     this.parentNode.appendChild(this);
   });
-
 };
 
 function appearance(selection) {
-    if (MODE === '1D') {
+    if (DIM_MODE === '1D') {
         selection.style('fill', function(d) {
             var v = Math.floor(d.value[0]);
             return 'rgb(' + [v, v, v].join(',') + ')';
@@ -91,7 +90,7 @@ function move(selection, x, y) {
         return element;
     }
 
-    if (MODE !== '1D') {
+    if (DIM_MODE !== '1D') {
         selection.each(function() {
           var box = d3.select(this);
           var text = getMatchingElement(d3.select(this), 'text');
@@ -292,7 +291,7 @@ function finish(pageName) {
 
 function init() {
 
-    if (MODE === '1D') {
+    if (DIM_MODE === '1D') {
         loadExamples([
             {value: [255]},
             {value: [100]}, 
@@ -308,7 +307,7 @@ function init() {
         });
     }
 
-    if (MODE === '1D') {
+    if (DIM_MODE === '1D') {
         d3.select('#simplex_exemplar_img').remove();
         var exemplarSvg = d3.select('#exemplar_cont')
           .append('svg')
@@ -344,7 +343,7 @@ function init() {
             'iteration': iterationIndex,
             'points': JSON.stringify(data),
         };
-        if (MODE !== '1D') {
+        if (DIM_MODE !== '1D') {
             query.bounds = JSON.stringify([[0, 4], [0, 4], [0, 4]]);
             query.get_images = true;
         }

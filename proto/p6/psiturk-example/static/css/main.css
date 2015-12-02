@@ -18,13 +18,13 @@ body {
 
 #instruct_col {
   width: 20%;
-  margin-left: 150px;
+  margin-left: 5%;
   margin-right: 20px;
   text-align: left;
 }
 
 #main_col {
-  width: 800px;
+  width: 70%;
 }
 
 .instructions.instruct_mini {
@@ -57,7 +57,7 @@ body {
 }
 
 #rank_bar {
-  border: 1px black solid;
+  /* border: 1px black solid; */
 }
 
 .ref_label, #rank_bar {
