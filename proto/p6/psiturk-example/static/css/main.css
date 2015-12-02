@@ -41,7 +41,7 @@ body {
 }
 
 #rank_cont {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 #rank_cont h2 {
@@ -134,6 +134,17 @@ h1, h2 {
   width: 95%;
   display: block;
   margin: 0 auto;
+}
+
+.bayesopt.cols {
+  display: inline-block;
+  text-align: center;
+}
+
+.bayes_img {
+  width: 150px;
+  display: block;
+  margin: 20px;
 }
 
 .col2 {

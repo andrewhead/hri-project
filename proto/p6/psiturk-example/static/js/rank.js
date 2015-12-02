@@ -4,7 +4,7 @@
 
 /* GLOBALS */
 
-var OPTIMIZE_MODE = 'BayesOpt';
+var OPTIMIZATION_MODE = 'BayesOpt';
 var DIM_MODE = '2D';
 var ABORT_ITERATIONS = 10;
 var iterationIndex = 1;
@@ -39,38 +39,31 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 function appearance(selection) {
-    if (DIM_MODE === '1D') {
-        selection.style('fill', function(d) {
-            var v = Math.floor(d.value[0]);
-            return 'rgb(' + [v, v, v].join(',') + ')';
+    selection
+      .style('fill-opacity', 0)
+      .style('stroke', 'black')
+      .style('stroke-width', 2);
+    d3.select('svg').selectAll('text')
+      .data(selection.data())
+      .enter()
+        .append('text')
+        .attr('transform', 'translate(10,25)')
+        .style('stroke-width', 1)
+        .style('font-size', 20)
+        .style('stroke', 'black')
+        .style('fill', 'white')
+        .style('font-family', 'Helvetica')
+        .text(function(d) { return d.index; });
+    d3.select('svg').selectAll('image')
+      .data(selection.data())
+      .enter()
+        .append('image')
+        .attr('xlink:href', function(d) { console.log(d); return d.img; })
+        .attr('width', 100)
+        .attr('height', 100)
+        .on('click', function() {
+            d3.event.preventDefault();
         });
-    } else {
-        selection
-          .style('fill-opacity', 0)
-          .style('stroke', 'black')
-          .style('stroke-width', 2);
-        d3.select('svg').selectAll('text')
-          .data(selection.data())
-          .enter()
-            .append('text')
-            .attr('transform', 'translate(10,25)')
-            .style('stroke-width', 1)
-            .style('font-size', 20)
-            .style('stroke', 'black')
-            .style('fill', 'white')
-            .style('font-family', 'Helvetica')
-            .text(function(d) { return d.index; });
-        d3.select('svg').selectAll('image')
-          .data(selection.data())
-          .enter()
-            .append('image')
-            .attr('xlink:href', function(d) { console.log(d); return d.img; })
-            .attr('width', 100)
-            .attr('height', 100)
-            .on('click', function() {
-                d3.event.preventDefault();
-            });
-    }
 }
 
 function move(selection, x, y) {
@@ -90,21 +83,19 @@ function move(selection, x, y) {
         return element;
     }
 
-    if (DIM_MODE !== '1D') {
-        selection.each(function() {
-          var box = d3.select(this);
-          var text = getMatchingElement(d3.select(this), 'text');
-          var image = getMatchingElement(d3.select(this), 'image');
-          image
-            .attr('x', box.attr('x'))
-            .attr('y', box.attr('y'))
-            .moveToFront();
-          text
-            .attr('x', box.attr('x'))
-            .attr('y', box.attr('y'))
-            .moveToFront();
-        });
-    }
+    selection.each(function() {
+      var box = d3.select(this);
+      var text = getMatchingElement(d3.select(this), 'text');
+      var image = getMatchingElement(d3.select(this), 'image');
+      image
+        .attr('x', box.attr('x'))
+        .attr('y', box.attr('y'))
+        .moveToFront();
+      text
+        .attr('x', box.attr('x'))
+        .attr('y', box.attr('y'))
+        .moveToFront();
+    });
     
     selection.moveToFront();
 
@@ -222,8 +213,6 @@ function loadExamples(points) {
           .call(move, function(d, i) { return i * 100; })
           .call(drag);
 
-    iterationIndex = iterationIndex + 1;
-
     return boxes;
 }
 
@@ -246,8 +235,8 @@ var Questionnaire = function() {
 	};
 
 	var prompt_resubmit = function() {
-		replaceBody(error_message);
-		$("#resubmit").click(resubmit);
+            replaceBody(error_message);
+            $("#resubmit").click(resubmit);
 	};
 
 	var resubmit = function() {
@@ -289,37 +278,59 @@ function finish(pageName) {
     });
 }
 
+function loadPair(xNew, xBest) {
+    $('#bayes_img_1').attr('src', xNew.img);
+    $('#bayes_img_2').attr('src', xBest.img);
+}
+
 function init() {
 
-    if (DIM_MODE === '1D') {
-        loadExamples([
-            {value: [255]},
-            {value: [100]}, 
-            {value: [32]}
-        ]);
-    } else {
-        $.get('/step', {
-            'points': JSON.stringify([]),
-            'iteration': iterationIndex,
-            'get_images': true,
-        }, function(data) {
-            loadExamples(data.points);   
+    // For use by Bayesian Optimization
+    var x, f, comparisons, xBest, xNew;
+    function updatePair(reqData) {
+        $.get('/bayesopt', reqData, function(data) {
+            x = data.x;
+            f = data.f;
+            console.log("x:" + x);
+            console.log("f:" + f);
+            comparisons = data.comparisons;
+            xBest = data.xbest;
+            xNew = data.xnew;
+            loadPair(xNew, xBest);
         });
+        iterationIndex = iterationIndex + 1;
+        if (iterationIndex > ABORT_ITERATIONS) {
+            $('#abort_butt').show();
+        }
     }
 
-    if (DIM_MODE === '1D') {
-        d3.select('#simplex_exemplar_img').remove();
-        var exemplarSvg = d3.select('#exemplar_cont')
-          .append('svg')
-          .attr('width', 200)
-          .attr('height', 200);
-        exemplarSvg.selectAll('rect')
-          .data([{'value': [128]}])
-          .enter()
-            .append('rect')
-              .attr('width', 200)
-              .attr('height', 200)
-              .call(appearance);
+    if (OPTIMIZATION_MODE === 'BayesOpt') {
+
+        $('.simplex').hide();
+        updatePair({});
+        $('.choice_butt').click(function() {
+            if ($(this).attr('id') === 'choice_butt_1') {
+                comparisons.push([xNew.index, xBest.index]);
+            } else {
+                comparisons.push([xBest.index, xNew.index]);
+            }
+            updatePair({
+                x: JSON.stringify(x),
+                f: JSON.stringify(f),
+                comparisons: JSON.stringify(comparisons)
+            });
+        });
+
+    } else if (OPTIMIZATION_MODE === 'NelderMead') {
+        $('.bayesopt').hide();
+        $.get('/step', {
+            points: JSON.stringify([]),
+            iteration: iterationIndex,
+            get_images: true,
+        }, function(data) {
+            loadExamples(data.points);   
+            iterationIndex = iterationIndex + 1;
+        });
     }
 
     $('#upload_ranking_butt').click(function() {
@@ -340,15 +351,14 @@ function init() {
         }
 
         var query = {
-            'iteration': iterationIndex,
-            'points': JSON.stringify(data),
+            iteration: iterationIndex,
+            points: JSON.stringify(data),
+            bounds: JSON.stringify([[0, 4], [0, 4], [0, 4]]),
+            get_images: true,
         };
-        if (DIM_MODE !== '1D') {
-            query.bounds = JSON.stringify([[0, 4], [0, 4], [0, 4]]);
-            query.get_images = true;
-        }
         $.get('/step', query, function(data) {
             loadExamples(data.points);
+            iterationIndex = iterationIndex + 1;
             if (iterationIndex > ABORT_ITERATIONS) {
                 $('#abort_butt').show();
             }

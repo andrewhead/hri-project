@@ -1,24 +1,22 @@
 # this file imports custom routes into the experiment server
 
 from flask import Blueprint, render_template, request, jsonify, abort, current_app
-from jinja2 import TemplateNotFound
-# from flask import Response
-# from functools import wraps
-# from sqlalchemy import or_
 
 from psiturk.psiturk_config import PsiturkConfig
 from psiturk.experiment_errors import ExperimentError
 from psiturk.user_utils import PsiTurkAuthorization
-# from psiturk.user_utils import nocache
 
 # # Database setup
 from psiturk.db import db_session
 from psiturk.models import Participant
 from json import loads
-# from psiturk.db import init_db
-# from json import dumps
+from functools import partial
+import numpy as np
+import cProfile
 
 from algorithms.simplex import Simplex
+from algorithms.bayesopt import newton_rhapson, acquire, default_kernel, compute_H, compute_g
+
 
 # load the configuration options
 config = PsiturkConfig()
@@ -34,53 +32,71 @@ custom_code = Blueprint(
 )
 
 
-###########################################################
-#  serving warm, fresh, & sweet custom, user-provided routes
-#  add them here
-###########################################################
+@custom_code.route('/bayesopt', methods=['GET'])
+def bayesopt():
 
+    # The caller is responsible with updating comparisons.
+    # They should be able to just upload the x and f as they were provided by the last
+    # call to this URL.
+    f = np.array(loads(request.args.get('f', '[]')), dtype=np.float)
+    x = np.array(loads(request.args.get('x', '[]')), dtype=np.float)
+    comparisons = np.array(loads(request.args.get('comparisons', '[]')), dtype=np.int)
 
-'''
-# example custom route
-'''
+    SIGMA = 10.0
+    BOUNDS = np.array([
+        [0.0, 4.0],
+        [0.0, 4.0],
+        [0.0, 4.0],
+    ])
+    KERNELFUNC = partial(default_kernel, a=-1)
 
+    # If no parameters are given, initialize the data
+    if f.shape == (0,):
+        x = np.array([
+            [1.0, 1.0, 1.0],
+        ])
+        f = np.array([
+            [0.0],
+        ])
+        comparisons = np.array([])
+        best_f_i = 0
+        xbest = x[0]
+        xnew = np.array([3.0, 3.0, 3.0])
+    # Predict the next point for comparison
+    else:
+        prof = cProfile.Profile()
+        '''
+        f, Cmap = newton_rhapson(
+            x, f, comparisons, KERNELFUNC,
+            compute_H, compute_g, SIGMA, maxiter=100)
+        '''
+        f, Cmap = prof.runcall(
+            newton_rhapson, x, f, comparisons, KERNELFUNC,
+            compute_H, compute_g, SIGMA, maxiter=10)
+        prof.dump_stats('code.profile')
+        xnew = acquire(x, f, Cmap, BOUNDS, KERNELFUNC)
+        best_f_i = np.argmax(f)
+        xbest = x[best_f_i]
 
-@custom_code.route('/my_custom_view')
-def my_custom_view():
-    current_app.logger.info("Reached /my_custom_view")  # Print message to server.log for debugging
-    try:
-        return render_template('custom.html')
-    except TemplateNotFound:
-        abort(404)
+    # Add newest points to x and f
+    x = np.array(x.tolist() + [xnew])
+    f = np.array(f.tolist() + [[0.0]])
 
-
-'''
-# example using HTTP authentication
-'''
-
-
-@custom_code.route('/my_password_protected_route')
-@myauth.requires_auth
-def my_password_protected_route():
-    try:
-        return render_template('custom.html')
-    except TemplateNotFound:
-        abort(404)
-
-
-'''
-# example accessing data
-'''
-
-
-@custom_code.route('/view_data')
-@myauth.requires_auth
-def list_my_data():
-    users = Participant.query.all()
-    try:
-        return render_template('list.html', participants=users)
-    except TemplateNotFound:
-        abort(404)
+    return jsonify(**{
+        'x': x.tolist(),
+        'f': f.tolist(),
+        'xbest': {
+            'value': xbest.tolist(),
+            'img': get_cut_image_name(*(xbest.tolist())),
+            'index': best_f_i,
+        },
+        'xnew': {
+            'value': xnew.tolist(),
+            'img': get_cut_image_name(*(xnew.tolist())),
+            'index': len(f) - 1,
+        },
+        'comparisons': comparisons.tolist()
+    })
 
 
 def get_cut_image_name(power, speed, ppi):

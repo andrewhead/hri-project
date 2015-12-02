@@ -24,13 +24,20 @@
 
                 <h6>To rank the examples, do the following.</h6>
 
-                <p>
+                <p class='simplex'>
                 There will be a row of examples on the page.
                 Drag the examples to order them from <b>best</b> to <b>worst</b>.
                 </p>
 
-                <p>
+                <p class='simplex'>
                 When you're happy with the ordering, click <b>I Have Sorted the Images</b>.
+                The algorithm will fetch more examples for you to compare.
+                </p>
+
+                <p class='bayesopt'>
+                You will be shown two images.
+                Pick the image that looks closest to the goal.
+                Click the <b>This Image Is Better</b> button beneath that image.
                 The algorithm will fetch more examples for you to compare.
                 </p>
 
@@ -50,21 +57,33 @@
             <div id='main_col' class='col2'>
                 <h1 id='main_header'>Goal</h1>
                 <div id='exemplar_cont'>
-                    <img id='simplex_exemplar_img' alt='goal' src="/static/images/cuts/32ppi_19.png" />
+                    <img id='simplex_exemplar_img' alt='goal' src="/static/images/cuts/100ppi_22.png" />
                 </div>
                 <div id='rank_cont'>
-                    <h2>Sort images by how closely they resemble the goal image.</h2>
-                    <div id='rank_panel'>
-                        <div class='ref_label'>
-                            <p>Best</p>
+                    <div class='bayesopt cols'>
+                        <div class='col2'>
+                            <img id='bayes_img_1' class='bayes_img' src='/static/images/university.png' alt='Image example 1'/>
+                            <button id='choice_butt_1' class='choice_butt'>This Image Is Better</button>
                         </div>
-                        <div id='rank_bar'></div>
-                        <div class='ref_label'>
-                            <p>Worst</p>
+                        <div class='col2'>
+                            <img id='bayes_img_2' class='bayes_img' src='/static/images/university.png' alt='Image example 2'/>
+                            <button id='choice_butt_2' class='choice_butt'>This Image Is Better</button>
+                        </div>
+                    </div>
+                    <div class='simplex'>
+                        <h2>Sort images by how closely they resemble the goal image.</h2>
+                        <div id='rank_panel'>
+                            <div class='ref_label'>
+                                <p>Best</p>
+                            </div>
+                            <div id='rank_bar'></div>
+                            <div class='ref_label'>
+                                <p>Worst</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div id='upload_ranking_cont'>
+                <div id='upload_ranking_cont' class='simplex'>
                     <button id='upload_ranking_butt'>I Have Sorted the Images</button>
                 </div>
                 <div id='abort_cont'>
