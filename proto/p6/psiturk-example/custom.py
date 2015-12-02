@@ -49,7 +49,7 @@ def bayesopt():
         [0.0, 4.0],
         [0.0, 4.0],
     ])
-    KERNELFUNC = partial(default_kernel, a=-1)
+    KERNELFUNC = partial(default_kernel, a=-.25)
 
     # Create extra bounds to rule out configurations that burned
     within_bounds = {}

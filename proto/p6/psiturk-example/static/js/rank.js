@@ -7,18 +7,13 @@ var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
 var pages = [
     "instructions/instruct-1.html",
     "instructions/instruct-2.html",
-    "instructions/instruct-3.html",
+    "instructions/instruct-3-Simplex.html",
+    "instructions/instruct-3-BayesOpt.html",
     "instructions/instruct-ready.html",
     "stage.html",
     "aborted.html",
     "success.html",
     "postquestionnaire.html",
-];
-var instructionPages = [
-    "instructions/instruct-1.html",
-    "instructions/instruct-2.html",
-    "instructions/instruct-3.html",
-    "instructions/instruct-ready.html"
 ];
 psiTurk.preloadPages(pages);
 var mycondition = condition;  // these two variables are passed by the psiturk server process
@@ -29,7 +24,12 @@ var iterationIndex = 1;
 var exampleIndex = 1;
 var optimizationMode;
 var maxIterations;
+var goalImg;
 var abortIterations;  // If you make this larger than maxIterations, no option to abort will be given
+var instructionPages = [
+    "instructions/instruct-1.html",
+    "instructions/instruct-2.html",
+];
 
 console.log("Condition:" + mycondition);
 console.log("Typeof Condition:" + typeof mycondition);
@@ -42,6 +42,15 @@ if (mycondition === '0') {
     maxIterations = 20;
     abortIterations = 30;
 }
+
+if (mycounterbalance === '0') {
+    goalImg = '/static/images/cuts/1000ppi_04.png';
+} else if (mycounterbalance === '1') {
+    goalImg = '/static/images/cuts/32ppi_17.png';
+}
+
+instructionPages.push("instructions/instruct-3-" + optimizationMode + ".html");
+instructionPages.push("instructions/instruct-ready.html");
 
 /* UI helpers for simplex optimization */
 
@@ -296,6 +305,9 @@ function loadPair(xNew, xBest) {
 }
 
 function init() {
+
+    // Set the goal image
+    $('#rank_exemplar_img').attr('src', goalImg);
 
     // Variables to maintain the state of Bayesian optimization
     var x, f, comparisons, xBest, xNew;

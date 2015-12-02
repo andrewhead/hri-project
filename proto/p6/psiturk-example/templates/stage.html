@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Control by Example</title>
+        <title>Image Discovery</title>
         <link rel='stylesheet' href='/static/css/main.css' />
     </head>
     <body>
@@ -11,47 +11,45 @@
                 <h4>Instructions</h4>
 
                 <p>
-                In this activity, you will guide a computer algorithm to find a target image.
-                The computer will show you example images.
-                Your will compare these examples.
-                After you compare them, the computer will suggest new examples for comparison.
+                In this activity, you will work with a computer algorithm to find a target image.
                 </p>
 
                 <p>
-                Each new set of examples from the computer will get you closer to the target image, based on your comparisons.
-                Your job is to give accurate comparison judgments so that the computer rapidly finds the right target image.
+                <i>You</i> will rank images based on their closeness to a target.
+                The better you rank these images, the more likely you are to find the target image.
                 </p>
 
-                <h6>To rank the examples, do the following.</h6>
-
-                <p class='simplex'>
-                There will be a row of examples on the page.
-                Drag the examples to order them from <b>best</b> to <b>worst</b>.
+                <p>
+                <i>The algorithm</i> will provide you new example images to rank.
                 </p>
 
+                <h6>To rank the examples:</h6>
+
                 <p class='simplex'>
+                To rank the images, you must drag them to sort them from <b>best</b> to <b>worst</b>.
                 When you're happy with the ordering, click <b>I Have Sorted the Images</b>.
-                The algorithm will fetch more examples for you to compare.
+                The algorithm will fetch more examples for comparison.
                 </p>
 
                 <p class='bayesopt'>
-                You will be shown two images.
-                Pick the image that looks closest to the goal.
-                Click the <b>This Image Is Better</b> button beneath that image.
-                The algorithm will fetch more examples for you to compare.
+                To rank the images, look at the pair of images beneath the goal.
+                Pick the one that you think is closest to the goal.
+                Under that image, click on the button that reads <b>This Image is Better</b>.
+                The algorithm will fetch more examples for comparison.
                 </p>
 
-                <h6>To complete the HIT</h6>
+                <h6>To complete the HIT:</h6>
+                <p>
+                The ranking task will automatically end after you give 20 rankings, or after you have found the target image.
+                If the algorithm seems to stop providing helpful images, keep ranking until you have given 20 rankings.
+                Then the task will end on its own.
+                </p>
+
+                <h6>Contact the author</h6>
 
                 <p>
-                The task will end when the algorithm has given you the target image, and you have selected it as the best one.
-                <i>In some cases, after many comparisons, the algorithm may not reach the expected goal.</i>
-                If the algorithm seems to "get stuck", click on the <b>"Images Aren't Getting Any Better"</b> button to end the task.
-                This button appears after 10 comparisons to give the algorithm a chance to show enough examples.
-                You will still get compensated for this HIT if you click this button.
+                If you have feedback on this hit, feel free to contact the author at <a href="mailto:openairandrew@gmail.com">openairandrew@gmail.com</a>
                 </p>
-
-                <p>Stuck?  Found a bug?  Send a message to <a href="mailto:openairandrew@gmail.com">openairandrew@gmail.com</a></p>
 
             </div>
             <div id='main_col' class='col2'>

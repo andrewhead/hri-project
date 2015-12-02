@@ -7,7 +7,7 @@
 
             <div class="row question">
                 <div class="col-md-8">
-                    I trusted the algorithm to make the right decision about what example to show me next.
+                    I trusted that the algorithm would show me better images in each round.
                 </div>
                 <div class="col-md-4">
                     <select id="trust" name="trust">
@@ -23,7 +23,7 @@
 
             <div class="row question">
                 <div class="col-md-8">
-                    I don't understand why the algorithm decided to show me the examples it did.
+                    I don't understand why the algorithm chose the examples it did.
                 </div>
                 <div class="col-md-4">
                     <select id="sense" name="sense">
@@ -39,23 +39,7 @@
 
             <div class="row question">
                 <div class="col-md-8">
-                    The algorithm's guesses improved over time.
-                </div>
-                <div class="col-md-4">
-                    <select id="improved" name="improved">
-                        <option selected="selected" disabled="disabled">Choose option</option>
-                        <option value="5">5 - Strongly Agree</option>
-                        <option value="4">4 - Agree</option>
-                        <option value="3">3 - Neutral</option>
-                        <option value="2">2 - Disagree</option>
-                        <option value="1">1 - Strongly Disagree</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row question">
-                <div class="col-md-8">
-                    The algorithm got stuck on suggesting images that weren't what I wanted.
+                    The algorithm got stuck.  It kept picking images that weren't what I wanted.
                 </div>
                 <div class="col-md-4">
                     <select id="stuck" name="stuck">
@@ -71,23 +55,7 @@
 
             <div class="row question">
                 <div class="col-md-8">
-                    The algorithm was intelligent in its choice of examples.
-                </div>
-                <div class="col-md-4">
-                    <select id="intelligent" name="intelligent">
-                        <option selected="selected" disabled="disabled">Choose option</option>
-                        <option value="5">5 - Strongly Agree</option>
-                        <option value="4">4 - Agree</option>
-                        <option value="3">3 - Neutral</option>
-                        <option value="2">2 - Disagree</option>
-                        <option value="1">1 - Strongly Disagree</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row question">
-                <div class="col-md-8">
-                    The algorithm accurately perceived what my goal was.
+                    The last image I marked as best was very similar to the goal image.
                 </div>
                 <div class="col-md-4">
                     <select id="perception" name="perception">
@@ -103,7 +71,59 @@
 
             <div class="row question">
                 <div class="col-md-8">
-                    The algorithm was making random choices about what to show me next.
+                    The algorithm's guesses got better over time.
+                </div>
+                <div class="col-md-4">
+                    <select id="improved" name="improved">
+                        <option selected="selected" disabled="disabled">Choose option</option>
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4 - Agree</option>
+                        <option value="3">3 - Neutral</option>
+                        <option value="2">2 - Disagree</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm was intelligent in its choice of examples.
+                </div>
+                <div class="col-md-4">
+                    <select id="intelligent" name="intelligent">
+                        <option selected="selected" disabled="disabled">Choose option</option>
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4 - Agree</option>
+                        <option value="3">3 - Neutral</option>
+                        <option value="2">2 - Disagree</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+            -->
+
+            <!--
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm accurately perceived what my goal was.
+                </div>
+                <div class="col-md-4">
+                    <select id="perception" name="perception">
+                        <option selected="selected" disabled="disabled">Choose option</option>
+                        <option value="5">5 - Strongly Agree</option>
+                        <option value="4">4 - Agree</option>
+                        <option value="3">3 - Neutral</option>
+                        <option value="2">2 - Disagree</option>
+                        <option value="1">1 - Strongly Disagree</option>
+                    </select>
+                </div>
+            </div>
+            -->
+
+            <div class="row question">
+                <div class="col-md-8">
+                    The algorithm made random choices about what to show me.
                 </div>
                 <div class="col-md-4">
                     <select id="random" name="random">
@@ -119,7 +139,7 @@
 
             <div class="row question">
                 <div class="col-md-10">
-                    Please share any additional feedback you have on the tasks.
+                    Please share any additional feedback you have on the activity.
                     <textarea id='open_feedback' name='open_feedback' style='display: block; width: 100%;' />
                 </div>
             </div>
