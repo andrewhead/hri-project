@@ -1,17 +1,8 @@
 /*global d3, $, window*/
-/*global PsiTurk, uniqueId, adServerLoc, mode, replaceBody*/
+/*global PsiTurk, uniqueId, adServerLoc, mode, replaceBody, condition, counterbalance*/
 /*jslint unparam:true */
 
-/* GLOBALS */
-
-var OPTIMIZATION_MODE = 'BayesOpt';
-// var OPTIMIZATION_MODE = 'Simplex';
-var ABORT_ITERATIONS = 30; // We've made this really large for now, as we don't want to show the abort button
-var BAYES_END_ITERATIONS = 20;
-var SIMPLEX_END_ITERATIONS = 20;
-var iterationIndex = 1;
-var exampleIndex = 1;
-
+/* PsiTurk setup */
 var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
 var pages = [
     "instructions/instruct-1.html",
@@ -30,9 +21,31 @@ var instructionPages = [
     "instructions/instruct-ready.html"
 ];
 psiTurk.preloadPages(pages);
+var mycondition = condition;  // these two variables are passed by the psiturk server process
+var mycounterbalance = counterbalance;  // they tell you which condition you have been assigned to
 
-/* HELPERS */
+/* Global configurations */
+var iterationIndex = 1;
+var exampleIndex = 1;
+var optimizationMode;
+var maxIterations;
+var abortIterations;  // If you make this larger than maxIterations, no option to abort will be given
 
+console.log("Condition:" + mycondition);
+console.log("Typeof Condition:" + typeof mycondition);
+if (mycondition === '0') {
+    optimizationMode = 'BayesOpt';
+    maxIterations = 20;
+    abortIterations = 30;
+} else if (mycondition === '1') {
+    optimizationMode = 'Simplex';
+    maxIterations = 20;
+    abortIterations = 30;
+}
+
+/* UI helpers for simplex optimization */
+
+/* A routine to move a D3 object highest in the view order */
 // REUSE: http://stackoverflow.com/questions/14167863/how-can-i-bring-a-circle-to-the-front-with-d3
 d3.selection.prototype.moveToFront = function() {
   return this.each(function(){
@@ -103,10 +116,6 @@ function move(selection, x, y) {
 
 }
 
-/* DISPLAY THE GOAL */
-
-/* MANIPULATE THE EXAMPLES */
-
 function getDisplacedNeighbor(sel) {
     var displaced = d3.selectAll('.nothing');
     d3.selectAll('#rank_bar rect').each(function() {
@@ -168,8 +177,6 @@ var drag = d3.behavior.drag()
 
   });
 
-/* LOAD THE EXAMPLES */
-
 function makeData(points) {
     var i, p, highestRank = 0;
     for (i = 0; i < points.length; i++) {
@@ -218,60 +225,62 @@ function loadExamples(points) {
     return boxes;
 }
 
+/* Questionnaire for the end of the study */
 // REUSE: from default psiTurk task.js
 var Questionnaire = function() {
 
-	var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. This might happen if you lose your internet connection. Press the button to resubmit.</p><button id='resubmit'>Resubmit</button>";
+    var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. This might happen if you lose your internet connection. Press the button to resubmit.</p><button id='resubmit'>Resubmit</button>";
 
-	var record_responses = function() {
-		psiTurk.recordTrialData({
-            phase:'Questionnaire:Submit',
-            status:'submit'
-        });
-        $('textarea').each(function(i, val) {
-            psiTurk.recordUnstructuredData(this.id, this.value);
-        });
-        $('select').each(function(i, val) {
-            psiTurk.recordUnstructuredData(this.id, this.value);		
-        });
-	};
+    var record_responses = function() {
+            psiTurk.recordTrialData({
+        phase:'Questionnaire:Submit',
+        status:'submit'
+    });
+    $('textarea').each(function(i, val) {
+        psiTurk.recordUnstructuredData(this.id, this.value);
+    });
+    $('select').each(function(i, val) {
+        psiTurk.recordUnstructuredData(this.id, this.value);		
+    });
+    };
 
-	var prompt_resubmit = function() {
-            replaceBody(error_message);
-            $("#resubmit").click(resubmit);
-	};
+    var prompt_resubmit = function() {
+        replaceBody(error_message);
+        $("#resubmit").click(resubmit);
+    };
 
-	var resubmit = function() {
-            replaceBody("<h1>Trying to resubmit...</h1>");
-            var reprompt = setTimeout(prompt_resubmit, 10000);
-            psiTurk.saveData({
-                success: function() {
-                    clearInterval(reprompt); 
-                    psiTurk.computeBonus('compute_bonus', function() { 
-                    new Questionnaire(); 
-                }); 
-            }, error: prompt_resubmit
-            });
-	};
-
-	// Load the questionnaire snippet 
-	psiTurk.showPage('postquestionnaire.html');
-	psiTurk.recordTrialData({
-            phase: 'Questionnaire:Begin',
-            status:'begin'
-        });
-	
-	$("#next").click(function () {
-	    record_responses();
-	    psiTurk.saveData({
-            success: function(){
+    var resubmit = function() {
+        replaceBody("<h1>Trying to resubmit...</h1>");
+        var reprompt = setTimeout(prompt_resubmit, 10000);
+        psiTurk.saveData({
+            success: function() {
+                clearInterval(reprompt); 
                 psiTurk.computeBonus('compute_bonus', function() { 
-                    psiTurk.completeHIT(); // when finished saving compute bonus, the quit
-                }); 
-            }, 
-            error: prompt_resubmit
-            });
-	});
+                new Questionnaire(); 
+            }); 
+        }, error: prompt_resubmit
+        });
+    };
+
+    // Load the questionnaire snippet 
+    psiTurk.showPage('postquestionnaire.html');
+    psiTurk.recordTrialData({
+        phase: 'Questionnaire:Begin',
+        status:'begin'
+    });
+    
+    $("#next").click(function () {
+        record_responses();
+        psiTurk.saveData({
+        success: function(){
+            psiTurk.computeBonus('compute_bonus', function() { 
+                psiTurk.completeHIT(); // when finished saving compute bonus, the quit
+            }); 
+        }, 
+        error: prompt_resubmit
+        });
+    });
+
 };
 
 function finish(pageName) {
@@ -339,18 +348,18 @@ function init() {
         iterationIndex = iterationIndex + 1;
     
         // Let user abort if they aren't seeing any more improvement
-        if (iterationIndex === ABORT_ITERATIONS) {
+        if (iterationIndex === abortIterations) {
             $('#abort_butt').show();
         // Automatically abort the experiment after a certain number of trials.
         // Server starts to slow down with too many points to compare.
-        } else if (iterationIndex > BAYES_END_ITERATIONS) {
+        } else if (iterationIndex > maxIterations) {
             bayesOptLog("Forced End", {}, function() { 
                 finish("aborted.html"); 
             });
         }
     }
 
-    if (OPTIMIZATION_MODE === 'BayesOpt') {
+    if (optimizationMode === 'BayesOpt') {
 
         // Hide all elements related to simplex method
         $('.simplex').hide();
@@ -392,7 +401,7 @@ function init() {
             });
         });
 
-    } else if (OPTIMIZATION_MODE === 'Simplex') {
+    } else if (optimizationMode === 'Simplex') {
 
         // Hide all elements unrelated to the simplex method
         $('.bayesopt').hide();
@@ -440,9 +449,9 @@ function init() {
 
                 // Allow the user to quit if they haven't reached the exemplar
                 iterationIndex = iterationIndex + 1;
-                if (iterationIndex === ABORT_ITERATIONS) {
+                if (iterationIndex === abortIterations) {
                     $('#abort_butt').show();
-                } else if (iterationIndex > SIMPLEX_END_ITERATIONS) {
+                } else if (iterationIndex > maxIterations) {
                     psiTurk.recordTrialData({
                         phase: "Simplex::Forced End",
                         points: data,
