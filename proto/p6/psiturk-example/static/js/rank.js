@@ -5,8 +5,10 @@
 /* GLOBALS */
 
 var OPTIMIZATION_MODE = 'BayesOpt';
-var DIM_MODE = '2D';
-var ABORT_ITERATIONS = 10;
+// var OPTIMIZATION_MODE = 'Simplex';
+var ABORT_ITERATIONS = 30; // We've made this really large for now, as we don't want to show the abort button
+var BAYES_END_ITERATIONS = 20;
+var SIMPLEX_END_ITERATIONS = 20;
 var iterationIndex = 1;
 var exampleIndex = 1;
 
@@ -58,7 +60,7 @@ function appearance(selection) {
       .data(selection.data())
       .enter()
         .append('image')
-        .attr('xlink:href', function(d) { console.log(d); return d.img; })
+        .attr('xlink:href', function(d) { return d.img; })
         .attr('width', 100)
         .attr('height', 100)
         .on('click', function() {
@@ -223,15 +225,15 @@ var Questionnaire = function() {
 
 	var record_responses = function() {
 		psiTurk.recordTrialData({
-            phase:'postquestionnaire',
+            phase:'Questionnaire:Submit',
             status:'submit'
         });
-		$('textarea').each(function(i, val) {
-			psiTurk.recordUnstructuredData(this.id, this.value);
-		});
-		$('select').each(function(i, val) {
-			psiTurk.recordUnstructuredData(this.id, this.value);		
-		});
+        $('textarea').each(function(i, val) {
+            psiTurk.recordUnstructuredData(this.id, this.value);
+        });
+        $('select').each(function(i, val) {
+            psiTurk.recordUnstructuredData(this.id, this.value);		
+        });
 	};
 
 	var prompt_resubmit = function() {
@@ -240,35 +242,36 @@ var Questionnaire = function() {
 	};
 
 	var resubmit = function() {
-		replaceBody("<h1>Trying to resubmit...</h1>");
-		var reprompt = setTimeout(prompt_resubmit, 10000);
-		psiTurk.saveData({
-			success: function() {
-			    clearInterval(reprompt); 
-                psiTurk.computeBonus('compute_bonus', function() { 
+            replaceBody("<h1>Trying to resubmit...</h1>");
+            var reprompt = setTimeout(prompt_resubmit, 10000);
+            psiTurk.saveData({
+                success: function() {
+                    clearInterval(reprompt); 
+                    psiTurk.computeBonus('compute_bonus', function() { 
                     new Questionnaire(); 
                 }); 
-			}, 
-			error: prompt_resubmit
-		});
+            }, error: prompt_resubmit
+            });
 	};
 
 	// Load the questionnaire snippet 
 	psiTurk.showPage('postquestionnaire.html');
-	psiTurk.recordTrialData({'phase':'postquestionnaire', 'status':'begin'});
+	psiTurk.recordTrialData({
+            phase: 'Questionnaire:Begin',
+            status:'begin'
+        });
 	
 	$("#next").click(function () {
 	    record_responses();
 	    psiTurk.saveData({
             success: function(){
                 psiTurk.computeBonus('compute_bonus', function() { 
-                	psiTurk.completeHIT(); // when finished saving compute bonus, the quit
+                    psiTurk.completeHIT(); // when finished saving compute bonus, the quit
                 }); 
             }, 
-            error: prompt_resubmit});
+            error: prompt_resubmit
+            });
 	});
-    
-	
 };
 
 function finish(pageName) {
@@ -285,35 +288,103 @@ function loadPair(xNew, xBest) {
 
 function init() {
 
-    // For use by Bayesian Optimization
+    // Variables to maintain the state of Bayesian optimization
     var x, f, comparisons, xBest, xNew;
+
+    /* A function to abstract out common logging boilerplate */
+    function bayesOptLog(eventName, extras, success) {
+        var data = {
+            x: x,
+            f: f,
+            comparisons: comparisons,
+        };
+        $.extend(data, extras);
+        psiTurk.recordTrialData({
+            phase: "BayesOpt::" + eventName,
+            data: data,
+        });
+        psiTurk.saveData({success: success});
+    }
+
+    /* 
+    For Bayesian optimization, update the pair of images based on recent user selection,
+    reporting past x and f values and comparisons to the server for picking a new point.
+    */
     function updatePair(reqData) {
+
+        // Disable buttons and update the text on them
+        $('button.choice_butt').prop('disabled', true);
+        var origText = $('button.choice_butt').first().text();
+        $('button.choice_butt').text("Waiting for new pair...");
+
         $.get('/bayesopt', reqData, function(data) {
+
             x = data.x;
             f = data.f;
-            console.log("x:" + x);
-            console.log("f:" + f);
             comparisons = data.comparisons;
             xBest = data.xbest;
             xNew = data.xnew;
+
             loadPair(xNew, xBest);
+
+            // Reset the buttons to their original text
+            $('button.choice_butt').prop('disabled', false);
+            $('button.choice_butt').text(origText);
+
+            // Show all objects that were hidden for the first round
+            $('.hide_first_round').show();
+
         });
+
         iterationIndex = iterationIndex + 1;
-        if (iterationIndex > ABORT_ITERATIONS) {
+    
+        // Let user abort if they aren't seeing any more improvement
+        if (iterationIndex === ABORT_ITERATIONS) {
             $('#abort_butt').show();
+        // Automatically abort the experiment after a certain number of trials.
+        // Server starts to slow down with too many points to compare.
+        } else if (iterationIndex > BAYES_END_ITERATIONS) {
+            bayesOptLog("Forced End", {}, function() { 
+                finish("aborted.html"); 
+            });
         }
     }
 
     if (OPTIMIZATION_MODE === 'BayesOpt') {
 
+        // Hide all elements related to simplex method
         $('.simplex').hide();
+
+        // Initialize with a server-chosen pair of points
         updatePair({});
+
+        // When a choice is made, save it as a comparison and update the points.
         $('.choice_butt').click(function() {
+
+            // Add a comparison based on the user's choice
+            var xBetter, xWorse;
             if ($(this).attr('id') === 'choice_butt_1') {
-                comparisons.push([xNew.index, xBest.index]);
+                xBetter = xNew;
+                xWorse = xBest;
             } else {
-                comparisons.push([xBest.index, xNew.index]);
+                xBetter = xBest;
+                xWorse = xNew;
             }
+            comparisons.push([xBetter.index, xWorse.index]);
+    
+            bayesOptLog("Choice", {
+                xBest: xBest,
+                xNew: xNew,
+                xBetter: xBetter,
+            });
+
+            // End the experiment when the user has achieved the exemplar
+            if (xBetter.img === $('#rank_exemplar_img').attr('src')) {
+                bayesOptLog("Success", {
+                    xChoice: xBest.value,
+                }, function() { finish("success.html"); });
+            }
+
             updatePair({
                 x: JSON.stringify(x),
                 f: JSON.stringify(f),
@@ -321,8 +392,12 @@ function init() {
             });
         });
 
-    } else if (OPTIMIZATION_MODE === 'NelderMead') {
+    } else if (OPTIMIZATION_MODE === 'Simplex') {
+
+        // Hide all elements unrelated to the simplex method
         $('.bayesopt').hide();
+
+        // Initialize with a set of server-chosen points
         $.get('/step', {
             points: JSON.stringify([]),
             iteration: iterationIndex,
@@ -331,45 +406,61 @@ function init() {
             loadExamples(data.points);   
             iterationIndex = iterationIndex + 1;
         });
-    }
 
-    $('#upload_ranking_butt').click(function() {
-        var data = d3.selectAll('#rank_bar rect').data();
-        psiTurk.recordTrialData({
-            phase: "ranking",
-            points: data,
-        });
-        psiTurk.saveData();
+        $('#upload_ranking_butt').click(function() {
 
-        if (data[0].img === $('#exemplar_img').attr('src')) {
+            var data = d3.selectAll('#rank_bar rect').data();
+
+            // Save current data on vertexes and their rankings
             psiTurk.recordTrialData({
-                phase: "final ranking",
+                phase: "Simplex::Choice",
                 points: data,
             });
             psiTurk.saveData();
-            finish("success.html");
-        }
 
-        var query = {
-            iteration: iterationIndex,
-            points: JSON.stringify(data),
-            bounds: JSON.stringify([[0, 4], [0, 4], [0, 4]]),
-            get_images: true,
-        };
-        $.get('/step', query, function(data) {
-            loadExamples(data.points);
-            iterationIndex = iterationIndex + 1;
-            if (iterationIndex > ABORT_ITERATIONS) {
-                $('#abort_butt').show();
+            // End the experiment when the user has achieved the exemplar
+            if (data[0].img === $('#rank_exemplar_img').attr('src')) {
+                psiTurk.recordTrialData({
+                    phase: "Simplex::Success",
+                    points: data,
+                });
+                psiTurk.saveData();
+                finish("success.html");
             }
-        });
 
-    });
+            // Fetch the next set of images from the server based on the current ranking.
+            $.get('/step', {
+                iteration: iterationIndex,
+                points: JSON.stringify(data),
+                bounds: JSON.stringify([[0, 4], [0, 4], [0, 4]]),
+                get_images: true,
+            }, function(data) {
+
+                loadExamples(data.points);
+
+                // Allow the user to quit if they haven't reached the exemplar
+                iterationIndex = iterationIndex + 1;
+                if (iterationIndex === ABORT_ITERATIONS) {
+                    $('#abort_butt').show();
+                } else if (iterationIndex > SIMPLEX_END_ITERATIONS) {
+                    psiTurk.recordTrialData({
+                        phase: "Simplex::Forced End",
+                        points: data,
+                    });
+                    psiTurk.saveData({
+                        success: function() {
+                            finish("aborted.html");
+                        }
+                    });
+                }
+            });
+        });
+    }
 
     $('#abort_butt').click(function() {
         var data = d3.selectAll('#rank_bar rect').data();
         psiTurk.recordTrialData({
-            phase: "abort ranking",
+            phase: "All::Aborted",
             points: data,
         });
         psiTurk.saveData({

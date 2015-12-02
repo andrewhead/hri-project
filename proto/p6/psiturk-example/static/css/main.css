@@ -70,6 +70,10 @@ body {
   font-size: 24px;
 }
 
+button[disabled] {
+  color: grey;
+}
+
 #upload_ranking_cont {
   text-align: center;
 }
@@ -124,7 +128,7 @@ h1, h2 {
   margin-right: 70px;
 }
 
-#simplex_exemplar_img {
+#rank_exemplar_img {
   width: 200px;
   display: block;
   margin: 0 auto;
@@ -141,10 +145,15 @@ h1, h2 {
   text-align: center;
 }
 
+.hide_first_round {
+  display: none;
+}
+
 .bayes_img {
   width: 150px;
   display: block;
   margin: 20px;
+  margin-top: 10px;
 }
 
 .col2 {

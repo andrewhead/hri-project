@@ -135,7 +135,7 @@ def get_cut_image_name(power, speed, ppi):
         ppi=PPI_LEVELS[int(round(ppi))],
         index=index
     )
-    path = "static/images/cuts/" + basename
+    path = "/static/images/cuts/" + basename
     return path
 
 
