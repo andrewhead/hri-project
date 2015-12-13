@@ -12,39 +12,41 @@
 
 \andrew{Make sure to tie this into what my contributions are to our class and what they should take away.}
 
-As you enter the Invention Lab, Berkeley's student hackerspace, you quickly notice that learning to work with fabrication machines is hard.
-Scorched cardboard sits atop the scrap pile from laser-cut materials that caught fire.
-Failed 3D prints line the foyer walls, deformed from thin supports and improper orientations.
-Consider what it takes to configure a laser cutter to ``raster'' images onto workpieces:
-four different parameters control the depth, speed, and fidelity of the image etched into the material.
-Improper values cause the image to appear only faintly, or melt the material (see Figure~\ref{fig:rasters}).
+This is a laser cutter---the VersaLaser 3.50.
+It can do things like cut out shapes of materials, trace lines into material, and raster images.
+It can do this with many different materials, like wood or acrylic.
+But today, these are what the interfaces look like.
+If you want to change the settings for vector cutting or engraving, you'll have to set these parameters here.
+But it's not straightforward what all of them mean in terms of a firing laser beam. 
+In the words of a pilot study participant when working with this type of interface for a few minutes, ``I still don't have a good mental model of how the heck this thing works.''
+
+This is an engraving or a tracing---a laser has traced out an ``O'' on a piece of particle board I gave it.
+There are tons of different ways we can engrave this O for different visual effects.
+
+This project evaluate the human factors for a couple of algorithm-interface pairs to enable quick and enjoyable discovery of ``the right parameters''.
+It focuses on a machine---a laser---that we can't really relate to by what our own bodies can do. 
+And it focuses on comparison judgments because we need to make relative judgments, but humans are much better suited to making comparison judgments than singular ones.
+
+To frame this problem in a way I could test it, I engraved this O with a bunch of different settings.
+Then in a couple of interfaces, I showed people one of the Os as a goal, and a set of options that they had to rank.
+For different ranking schemes, I change the front-end.
+What are the pairs of algorithms and interfaces I use?
+
+Consider what it takes to configure a laser cutter to engrave workpieces.
+Consider the trivial ``O'' design in Figure~\ref{fig:rasters}.
+Three parameters control the depth, speed, and resolution of the image etched into the material.
+Improper values cause the image to appear only faintly, or scorch the material.
 
 This research pursues a vision for fabrication machines that help users learn how to operate them.
-My key insight is that a fabrication machine can be equipped with an active learning algorithm to enable mixed initiative exploration of a parameter space.
-I implement this for a laser cutter and a maker rastering images.
-My intended contributions are:
-\begin{enumerate}
-\item A catalog of user problems realizing design intent with laser cutters
-\item Application of active learning to discovering an ideal fabrication machine configuration
-\item A comparison of mixed initiative parameter exploration with self-led approaches
-\end{enumerate}
-
-To understand frequency, severity, and types of errors makers encounter with laser cutters, I will interview a small number of student members of the Invention Lab.
-
-I will implement an active learning algorithm~\cite{settles_active_2010} to guide a machine, with a user's help, to some subjective ideal configuration for rastering an image.
+My key insight is that the human factors of these algorithms can guide us to picking the right one for optimization.
 Each configuration will comprise laser power, speed, frequency, and resolution.
 The algorithm will suggest configurations and demonstrate them by rastering an image.
 The algorithm will collect a user's rating of raster quality.
 As the learned model will predict an continuous value, I will draw from past work for actively learning continuous-value models (e.g.~\cite{sugiyama_active_2008}).
-% Currently, I suspect that a Gaussian kernel function or a quadratic curve will best express a user's perception of the quality of a configuration in actualizing their design.
 
-To understand the trade-offs of this method of mixed initiative parameter space exploration, I will run a usability study.
-Participants will be asked to recover a configuration for rastering an image that matches an exemplar I provide.
-The method of parameter exploration will be varied:
-in one condition, participants explore configurations on their own.
-In the other, participants explore the configuration space prompted by the examples provided by the active learning algorithm.
-Among other metrics, I will measure the total number of configurations tested, and Likert scale and open-ended feedback on perceptions of the experience.
-
-The usability study will use a Universal Laser Systems VLS3.50 machine.
-I have received clearance to work with this equipment.
-Given the limited time available for the hardware, the proposed usability study will likely include around 4--6 participants.
+To understand the trade-offs of this method of mixed initiative parameter space exploration, I ran a usability study.
+This was on Mechanical Turk with 28 participants.
+They were asked to recover a configuration for rastering an image that matches an exemplar I provide.
+The method of parameter exploration was varied between two algorithms: Nelder-Mead~\cite{nelder_simplex_1964} and an instantiation of Bayesian optimization~\cite{brochu_tutorial_2010}.
+I measured the total number of configurations tested, and Likert scale feedback on perceptions of the algorithms.
+I also report on a pilot study that compares how people work with a standard slider-based interface for parameter exploration vs.\ and interface based on Nelder-Mead optimization.

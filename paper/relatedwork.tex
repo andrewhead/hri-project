@@ -4,41 +4,49 @@
 
 We draw upon a rich history of related work on optimization for black box functions.
 This can trace its origins back to optimal experiment design~\cite{box_empirical_1987}.
-The intent of optimal experiment design is to (quote from Box \& Draper).
+The intent of optimal experiment design is to~\andrew{quote from Box \& Draper}.
 
 Related techniques for methods for numerically determining an optimum include 
 the Nelder-Mead method~\cite{nelder_simplex_1965},
-evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))~\cite{hansen_adapting_1996},
+evolutionary strategies (e.g., CMA-ES~\cite{hansen_adapting_1996}),
 Bayesian optimization~\cite{brochu_tutorial_2010},
 Response Surface Modeling~\cite{box_empirical_1987},
 and reinforcement learning~\cite{sutton_reinforcement_1998}.
 
 We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning~\cite{cohn_active_1996,settles_active_2010}.
-An overarching theme from this body of work is ``exploration'' vs.\ ``exploitation''.
+Active learning focuses on~\andrew{finish this}.
+
+An overarching theme from this body of work I use to frame the results is ``exploration'' vs.\ ``exploitation''~\cite{sutton_reinforcement_1998}.
 This means that a large enough portion of the function's domain is covered to be reasonably certain that optima found are global, not local;
 at the same time, the algorithm does not spend too long exploring regions that are not likely to contain the global optimum.
 
 Philosophically, this work aims to lessen the effort to train a machine to learn a human's model of ideal behavior.
 In this aim, it is similar to past work on robotic ``clicker training''~\cite{kaplan_robotic_2002}~\cite{grollman_dogged_2007}.
 Clicker training aims to teach robots complex behavior with a single binary input channel that can reward partial behaviors until a robot builds up the full behavior.
-This can be considered a simple version of reinforcement learning, where a human judge offers rewards to a robot so that it can learn an ideal policy of how to act when it's in a certain state.
+This can be considered a modified version of reinforcement learning, where a human judge offers rewards to a robot so that it can learn an ideal policy of how to act when it's in a certain state.
+More concretely for this instantiation of this project, I am interested in modeling user preference.
+A problem framing of Bayesian optimization for user preference modeling that motivated this work can be found in~\cite{brochu_tutorial_2010}.
 
 This work is similar to past comparative reviews of algorithms (e.g.~\cite{hansen_comparing_2010,mersmann_benchmarking_2010}).
 
-One domain highly related to our domain of interest is that of user preference modeling.
-For an example of a problem framing of Bayesian optimization for user preference modeling, see~\cite{brochu_tutorial_2010}.
-
-Also see the general review of experimental design, active learning, and user preference modeling in~\cite{brochu_tutorial_2010}.
-
-\subsection{Assistive Fabrication Devices}
+\subsection{Interactive Fabrication}
 
 A growing body of recent work has focused on improving makers' ability to express their intentions with fabrication machines.
-Relevant papers include
-\cite{zoran_human-computer_2013}
-\cite{zoran_hybrid_2014}
-\cite{tanenbaum_democratizing_2013}
-\cite{mueller_interactive_2012}
-\cite{mueller_laserorigami_2013}
-\cite{mueller_wireprint_2014}
-\cite{follmer_inform_2013}
-.
+Fabrication machines infer a user's intent based on models or sketches that they produce.
+These intents are fed back into the system to impact the workpiece produced.
+
+FreeD (and FreeD V2~\cite{zoran_human-computer_2013}).
+A tool for carving shapes in 3D.
+One of the modes of carving is semi-autonomous.
+A user makes larger-scale motions, and the milling device, based on its position, will remove more or less material.
+The authors' contributions are an effort to minimize fabrication risk by using a small degree of digital control and automation while allowing authentic engagement with raw material to achieve unique results~\cite{zoran_hybrid_2014}.
+While I consider the interaction techniques here to be semi-autonomous as well, the end goal is to enable user's to achieve some goal rather than enable creative engagement with a physical material.
+
+\emph{Constructable}~\cite{mueller_interactive_2012} is an interactive drafting table that produces precise physical output in every step.
+Its aim is to move interactive fabrication toward what Mueller et al.\ call \emph{interactive construction}, where users interact by drafting directly on the workpiece.
+Constructable transforms user laser pointer motions into a constraint set defined by the user's current tool, and implements the effect with a cutting laser.
+Constructable focuses on inferring user's desired shapes based on their sketches with laser pointers rather than showing them examples of the workpiece they want to produce and help them select from a space of options.
+LaserOrigami~\cite{mueller_laserorigami_2013} uses the constructable platform to enable interactive fabrication of 3D, laser cut objects.
+
+Other systems (e.g., ~\cite{mueller_wireprint_2014}~\cite{savage_sauron_2013}), provide mechanisms for rapidly prototyping both non-interactive and interactive workpieces.
+This is with an intent to speed up the design process.
