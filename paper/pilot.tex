@@ -1,0 +1,78 @@
+\section{A Preliminary Lab Experiment}
+
+Before the Mechanical Turk (MTurk) experiment, I ran in-lab studies with three participants.
+I ran it before due to time constraints.
+The motivation for this paper was to evaluate new interaction techniques for discovering the right parameters on a fabrication machine.
+Participants used either the Nelder-Mead interface or a slider-based interface to guide the laser cutter to choosing engraving parameters.
+
+The slider-based interface was a near-direct copy of the software user interface for the Universal Laser Systems VersaLaser 3.50, a modern laser cutter.
+There were three parameters that could be modified to change how the laser engraved:
+power, speed, and PPI\@.
+Just like in the original interface, there was no indication of how these parameters would affect how the laser engraved, or how the result would appear.
+The experimenter provided no description of the parameters.
+This was to replicate the experience of attempting to find the right way to configure a machine without reading a manual.
+While this may seem contrived, end users' reluctance to read reference documentation is well-studied in the software usability domain (see~\cite{carroll_nurnberg_1990} for a classic overview).
+I wanted to understand difficulties of participants who did not have access to documentation or worked examples.
+
+Similarly to the MTurk experiment, participants were provided with a goal---
+a physical 2cm$\times$2cm tile with an engraved ``O''.
+This was cut on a soft particle wood 3mm thick.
+With the slider-based interface, participants moved sliders to change the values of power, speed and PPI to alter the engraving appearance.
+They were given pen and paper in case they wanted to take notes as they discovered how these parameters affected the appearance.
+With the Nelder-Mead interface, similar to above, participants ordered engravings from left to right based on their closeness to the goal.
+Unlike the MTurk study, participants in the lab could actually do this ranking with the physical workpieces.
+After ordering them on the table, they entered their ranking into the software interface.
+
+\subsection{Results}
+
+I affirmed some of my expectations:
+One user told me after working with the slider interface for several minutes:
+``I still don't have a good mental model of how the heck this thing works''.
+
+Here I take an early attempt to understand the benefits and detriments of working with the two interfaces.
+I observed~\andrew{timing comparison} between the two interfaces.
+Participants spent more time thinking and reflecting about their next choice with~\andrew{Interface X}.
+Participants also produced more samples with~\andrew{Interface X} than \andrew{Interface Y}.
+
+\subsection{Lessons Learned}
+
+\subsubsection{Algorithm Design}
+
+Suggested inputs need to be within expected bounds.
+
+It's better to introduce one example at a time than many.
+This reduces the total amount of time producing the examples (which was 20 seconds to cut for each example).
+
+For Nelder-Mead, it's important to have four initial input points instead of three.
+Otherwise, it will be impossible for the algorithm to produce some of the possible settings in the three-dimensional parameter space.
+
+\subsubsection{Input Design}
+
+To improve the efficiency of interaction with the simplex, we propose a couple of ideas.
+Don't deliver the reflection, expansion and contraction all at once.
+Only deliver one point at a time.
+\andrew{It would be great if we could show some estimation of how much time is wasted if we show all three vs.\ showing only the necessary ones.}
+Also, don't recompute the ranks after the worst point has been replaced.
+As it was replaced with a suggested point, its rank should already be known.
+So always return a reflection after the first ranking, unless a reduce has been performed.
+Reduce operations introduce additional unseen points.
+
+Participants shouldn't be given a choice to rank an expansion or a contraction if they won't be able to incorporate it into the current best set.
+It makes the system look like it's only randomly accepting their advice.
+Certain types of animations may make it more clear that one of the previously ranked points is getting substituted in.
+
+\subsubsection{Sundry User Interface Issues}
+
+On user (P2) expressed a preference for insertion sort instead of swap sort.
+We implemented this.
+They also expressed disappointment that some of their best-picked examples were not saved.
+So, only one point proposal for the Nelder-Mead (reflection, expansion, or contraction)
+
+\subsubsection{Limitations}
+
+One of the participants only performed the simplex method, and it was found to contain bugs.
+
+This study did not focus on Bayesian Optimization as a method for testing configurations.
+
+It should also be obvious from the above discussion that by the time I conducted the MTurk study, Nelder-Mead was the more battle-tested and mature of the two implementations.
+The parameters Bayesian Optimization should be refined more, and perhaps the interface should also be tested in a laboratory setting.

@@ -1,5 +1,15 @@
 \section{Introduction}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figures/engravings}
+  \caption{%
+    A user of the laser cutter has to manipulate the laser's parameters to get the desired appearance.
+    Black holes are when the laser passes completely through the material---
+    the center is cut out and falls through.
+  }\label{fig:rasters}
+\end{figure}
+
 \andrew{Make sure to tie this into what my contributions are to our class and what they should take away.}
 
 As you enter the Invention Lab, Berkeley's student hackerspace, you quickly notice that learning to work with fabrication machines is hard.
@@ -27,18 +37,6 @@ The algorithm will suggest configurations and demonstrate them by rastering an i
 The algorithm will collect a user's rating of raster quality.
 As the learned model will predict an continuous value, I will draw from past work for actively learning continuous-value models (e.g.~\cite{sugiyama_active_2008}).
 % Currently, I suspect that a Gaussian kernel function or a quadratic curve will best express a user's perception of the quality of a configuration in actualizing their design.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.4\textwidth]{figures/rasters}
-  \caption{%
-  A drawing `rastered' into cardboard.
-  \emph{Left}: the original image given to the laser cutter.
-  \emph{Center}: an etching that too faint to see due to low power.
-  \emph{Right}: an etching scorched into the cardboard due to high power and low speed.
-  A user of the laser cutter has to manipulate the laser's parameters to get the desired appearance.}
-\label{fig:rasters}
-\end{figure}
 
 To understand the trade-offs of this method of mixed initiative parameter space exploration, I will run a usability study.
 Participants will be asked to recover a configuration for rastering an image that matches an exemplar I provide.

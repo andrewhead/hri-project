@@ -3,28 +3,27 @@
 \subsection{Optimizing Black Box Functions}
 
 We draw upon a rich history of related work on optimization for black box functions.
-This can trace its origins back to optimal experiment design~\cite{box}.
+This can trace its origins back to optimal experiment design~\cite{box_empirical_1987}.
 The intent of optimal experiment design is to (quote from Box \& Draper).
 
-Related techniques for methods for numerically determining an optimum include:
-\begin{itemize}
-  \item Nelder-Mead method~\cite{nelder}
-  \item Evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))~\cite{cma}
-  \item Bayesian optimization~\cite{brochu_tutorial_2010}
-  \item Gaussian processes~\cite{gaussian}
-  \item Response Surface Modeling~\cite{box}
-  \item Reinforcement learning~\cite{reinforcement}
-\end{itemize}
+Related techniques for methods for numerically determining an optimum include 
+the Nelder-Mead method~\cite{nelder_simplex_1965},
+evolutionary strategies (e.g., covariance matrix adaptation (CMA-ES))~\cite{hansen_adapting_1996},
+Bayesian optimization~\cite{brochu_tutorial_2010},
+Response Surface Modeling~\cite{box_empirical_1987},
+and reinforcement learning~\cite{sutton_reinforcement_1998}.
 
-We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning~\cite{al} and multi-arm bandit problems~\cite{multi-armed}.
+We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning~\cite{cohn_active_1996,settles_active_2010}.
 An overarching theme from this body of work is ``exploration'' vs.\ ``exploitation''.
 This means that a large enough portion of the function's domain is covered to be reasonably certain that optima found are global, not local;
 at the same time, the algorithm does not spend too long exploring regions that are not likely to contain the global optimum.
 
 Philosophically, this work aims to lessen the effort to train a machine to learn a human's model of ideal behavior.
-In this aim, it is similar to past work on robotic ``clicker training''~\cite{clicker_1}~\cite{clicker_2}.
+In this aim, it is similar to past work on robotic ``clicker training''~\cite{kaplan_robotic_2002}~\cite{grollman_dogged_2007}.
 Clicker training aims to teach robots complex behavior with a single binary input channel that can reward partial behaviors until a robot builds up the full behavior.
-This can be considered a simple version of reinforcement learning~\cite{reinforcement}, where a human judge offers rewards to a robot so that it can learn an ideal policy of how to act when it's in a certain state.
+This can be considered a simple version of reinforcement learning, where a human judge offers rewards to a robot so that it can learn an ideal policy of how to act when it's in a certain state.
+
+This work is similar to past comparative reviews of algorithms (e.g.~\cite{hansen_comparing_2010,mersmann_benchmarking_2010}).
 
 One domain highly related to our domain of interest is that of user preference modeling.
 For an example of a problem framing of Bayesian optimization for user preference modeling, see~\cite{brochu_tutorial_2010}.
@@ -34,4 +33,12 @@ Also see the general review of experimental design, active learning, and user pr
 \subsection{Assistive Fabrication Devices}
 
 A growing body of recent work has focused on improving makers' ability to express their intentions with fabrication machines.
-Relevant papers include \ldots
+Relevant papers include
+\cite{zoran_human-computer_2013}
+\cite{zoran_hybrid_2014}
+\cite{tanenbaum_democratizing_2013}
+\cite{mueller_interactive_2012}
+\cite{mueller_laserorigami_2013}
+\cite{mueller_wireprint_2014}
+\cite{follmer_inform_2013}
+.
