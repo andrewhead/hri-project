@@ -1,50 +1,46 @@
 \section{Algorithms}
 
+I implement two algorithms that enable the discovery of user preferences.
+Here, I provide a brief introduction to each of the algorithms.
+I describe the steps taken to modify the algorithms to accept comparisons as input to drive optimization.
+I also describe how bounds are enforced for each one, the initial points of each algorithm, and the hyperparameters used.
+
 \subsection{Nelder-Mead Optimization}
 
-Nelder-Mead is a numerical optimization method.~\andrew{Cross-check terminology.}
-It is also known as the ``simplex'' method.
+Nelder-Mead is an optimization method that iteratively moves vertices of a simplex in the direction of towards the best-rated vertex~\cite{nelder_simplex_1965}.
+For reflection, expansion, and contraction, we chose coefficients observed as the best in the original Nelder-Mead work~\cite{nelder_simplex_1965}:
+a reflection coefficient of 1,
+an expansion coefficient of 2,
+a contraction coefficient of -1/2,
+and a reduction coefficient of 1/2.
 
-It positions points at initial locations.
-It then queries a function for evaluations at each of those four locations.
-It computes the current centroid of the simplex.
-Next, it moves the worst point, or all but the best points, toward the best point by reflecting, expanding, contracting, or reducing it relative to the centroid or the best point.
-By opportunistically the simplex in the direction of the best point, the Nelder-Mead moves toward some local maximum.
-Depending on the size of the initial simplex and the positioning of the initial points, a simplex in some cases may be able to find the global maximum.
-
-The Nelder-Mead method has been shown to work well, even for non-convex models~\andrew{needs citations}.
-We kept typical weights: a reflection coefficient of 1, an expansion coefficient of 2, a contraction coefficient of -1/2, and a reduction coefficient of 1/2.
-\andrew{See if we can find these weights in the literature on Nelder-Mead.}
-
-This formulation of Nelder-Mead~\andrew{Need a concrete, non-Wikipedia reference} only needs to know the best, second-to-worst, and worst points out of each set of vertices.
-Because of this, the simplex can move towards some maximum as long as a human can rank examples relative to each other.
-No objective or numerical assessment of the quality of each vertex is needed.
+To perform Nelder-Mead optimization, the algorithm doesn't need to know an exact evaluation for each vertex.
+It only needs to know the best, second-to-worst, and worst points out of each set of vertices.
 
 \subsection{Bayesian Optimization}
 
-Bayesian optimization consists of two steps.
+Each iteration of Bayesian optimization comprises two steps~\cite{brochu_tutorial_2010}:
+fitting a Gaussian process to the data seen so far, and sampling a new value likely to maximize the unknown cost function.
+Typically, selection of this sample in the second step is performed by maximizing \emph{expected improvement}.
+Based on the work by Brochu et al.~\cite{brochu_tutorial_2010}, I express this as combination of two terms for exploration and exploitation:
+\begin{equation}
+EI (x) = (\mu(x) - f (x^+)) \Phi(Z) + \sigma(x) \phi(Z)
+\end{equation}
+where $Z = \frac{\mu(x) - f(x^+)}{\sigma(x)}$ is in the domain of a normal distribution, representing the probability of improvement at $x$;
+$\mu(x)$ is the predicted value of a new input $x$;
+$f(x^+)$ is highest value seen so far;
+$\sigma(x)$ is the standard deviation at $x$.
+$\phi(Z)$ and $\Phi(Z)$ are the probability and cumulative density functions for $Z$.
 
-First, it continually learns a Gaussian process.
+\if 0
 With this Gaussian process, it predicts the values of a new points.
 These points are predicted based on some kernel---
 usually the nearest points in an input space are most critical in determining the prediction for a new point.
 Based on the observations it has collected so far, Bayesian Optimization produces a Gaussian process that will predict the output for new data points.
+\fi
 
-Second, it predicts which values should be sampled next.
-Typically, this is done with some metric of \emph{expected improvement}.
-In some cases, this can be expressed as a linear combination of a term that maximizes exploitation and a term that maximized exploration:
-\begin{equation}
-EI (x) = (\mu(x) - f (x^+)) \Phi(Z) + \sigma(x) \phi(Z)
-\end{equation}
-where $Z = \frac{\mu(x) - f(x^+)}{\sigma(x)}$, a term that describes, when used with a normal distribution, the probability of improvement at input $x$.
-$\mu(x)$ is the predicted value of a new input $x$.
-$f(x^+)$ is highest value seen so far.
-$\sigma(x)$ is the variance at $x$.~\andrew{is this the variance or the standard deviation?}
-$\phi(Z)$ and $\Phi(Z)$ are the probability and cumulative density functions for $Z$.
-
-Brochu et al.~\cite{brochu_tutorial_2010}~\cite{brochu_active_2008} propose a variant on Bayesian optimization that derives the underlying model based on comparisons alone.
-The details are irrelevant for the purposes of this paper.
-The algorithm I used is identical to that proposed in Brochu et al.'s tutorial~\cite{brochu_tutorial_2010}.
-I varied parameters and the kernel matrix based on what appeared to work best for convergence to a global maximum for my application of finding the right engraving settings.
-I used a squared exponential kernel, with $\sigma = 0.25$ and $\sigma_{noise} = 10$.
-\andrew{Understand what these mean and whether it was ridiculous to use these parameters.}
+Brochu et al.~\cite{brochu_tutorial_2010}~\cite{brochu_active_2008} propose a variant on Bayesian optimization that takes comparisons between sampled points as inputs.
+I implement this algorithm for this study.
+I used a squared exponential kernel with $\sigma = 0.25$.
+In performing Newton-Rhapson optimization according to Brochu et al.'s formulation, $\sigma_{noise}$ was set to 10.
+These parameters were chosen based on what appeared to enable convergence in the target 3D input space for this study.
