@@ -5,26 +5,27 @@ Here, I provide a brief introduction to each of the algorithms.
 I describe the steps taken to modify the algorithms to accept comparisons as input to drive optimization.
 I also describe how bounds are enforced for each one, the initial points of each algorithm, and the hyperparameters used.
 
-The input space for each algorithm was a discretized logarithm scale for each of three dimensions: the laser cutter's settings for power, speed, and PPI\@.
+The input space for each algorithm was discretized, with a log-scale for each of three dimensions: the laser cutter's settings for power, speed, and PPI\@.
 Power and speed ranged from 1--100\%.
 Possible values for these two dimensions were:
 $\left[1\%, 3\%, 10\%, 32\%, 100\%\right]$.
-PPI ranged within 10--1000, with possible values.
+PPI ranged within 10--1000, with possible values:
 $\left[10, 32, 100, 316, 1000\right]$.
-In the space below, configurations are described as a three-tuple:
+In the space below, configurations are described as three-tuples:
 $\left(Power, Speed, PPI\right)$.
+For a discussion of how each of these parameters impact the laser cutter's operation, see~\cite{versalaser_2010}.
 
 \subsection{Nelder-Mead Optimization}
 
-Nelder-Mead is an optimization method that iteratively moves vertices of a simplex in the direction of towards the best-rated vertex~\cite{nelder_simplex_1965}.
+Nelder-Mead is an optimization method that iteratively moves vertices of a simplex towards the best-rated vertex~\cite{nelder_simplex_1965}.
 For reflection, expansion, and contraction, we chose coefficients observed as the best in the original Nelder-Mead work~\cite{nelder_simplex_1965}:
-a reflection coefficient of 1,
-an expansion coefficient of 2,
-a contraction coefficient of -1/2,
+$\alpha=1$,
+$\gamma=2$,
+$\beta=-1/2$,
 and a reduction coefficient of 1/2.
 
 To perform Nelder-Mead optimization, the algorithm doesn't need to know an exact evaluation for each vertex.
-It only needs to know the best, second-to-worst, and worst points out of each set of vertices.
+It only needs to know which is the best, second-to-worst, and worst points out of each set of vertices.
 
 Initially, the vertices were:
 (1\%, 1\%, 10),
@@ -42,7 +43,7 @@ For example, one image consisted of very sparse dots, another of very light line
 
 Each iteration of Bayesian optimization comprises two steps~\cite{brochu_tutorial_2010}:
 fitting a Gaussian process to the data seen so far, and sampling a new value likely to maximize the unknown cost function.
-Typically, selection of this sample in the second step is performed by maximizing \emph{expected improvement}.
+Typically, selection of the sample in the second step is performed by maximizing \emph{expected improvement}.
 Based on the work by Brochu et al.~\cite{brochu_tutorial_2010}, I express this as combination of two terms for exploration and exploitation:
 \begin{equation}
 EI (x) = (\mu(x) - f (x^+)) \Phi(Z) + \sigma(x) \phi(Z)
@@ -50,7 +51,7 @@ EI (x) = (\mu(x) - f (x^+)) \Phi(Z) + \sigma(x) \phi(Z)
 where $Z = \frac{\mu(x) - f(x^+)}{\sigma(x)}$ is in the domain of a normal distribution, representing the probability of improvement at $x$;
 $\mu(x)$ is the predicted value of a new input $x$;
 $f(x^+)$ is highest value seen so far;
-$\sigma(x)$ is the standard deviation at $x$.
+$\sigma(x)$ is the standard deviation at $x$;
 $\phi(Z)$ and $\Phi(Z)$ are the probability and cumulative density functions for $Z$.
 
 Brochu et al.~\cite{brochu_tutorial_2010}~\cite{brochu_active_2008} propose a variant on Bayesian optimization that takes comparisons between sampled points as inputs.

@@ -16,7 +16,7 @@
 
 \subsection{Nelder-Mead Rank Sorting Interface}
 
-When it determines how to move the worst point, the Nelder-Mead algorithm may need to know any of the following:
+When choosing how to move the worst point, the Nelder-Mead algorithm may need to know any of the following:
 the worst vertex, the best vertex, or the second-to-worst vertex.
 All of these can be collected at once.
 The current interface (see Figure~\ref{fig:interface_nm}) asks a user to produce a ranked list of the vertices from best to worst.
@@ -31,7 +31,6 @@ Once it replaces the worst point, the list is cleaned to show only the simplex's
 \subsection{Bayesian Optimization Pair Comparison Interface}
 
 With Brochu et al.'s variant on Bayesian optimization~\cite{brochu_tutorial_2010}, an optimal point for a cost function that's expensive to evaluate can be found by collecting comparison ratings between pairs of examples.
-My interface is similar to the one in Brochu et al.'s paper.
 In their interface, a user was shown the best example so far, and an examples that maximized expected improvement.
 The user was prompted to make a choice about which of the two was better.
 

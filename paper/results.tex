@@ -14,7 +14,7 @@ By looking at longitudinal data (Figure~\ref{fig:best_distances}), it appears th
   \begin{subfigure}[b]{0.23\textwidth}
     \includegraphics[width=\textwidth]{figures/bestfits_bo}
   \end{subfigure}
-  \caption{Best fits for Nelder-Mead}\label{fig:bestfits}
+  \caption{Distance of a participant's best-rated point and the goal configuration for each algorithm.}\label{fig:bestfits}
 \end{figure}
 
 \begin{figure}
@@ -34,15 +34,15 @@ By looking at longitudinal data (Figure~\ref{fig:best_distances}), it appears th
   \caption{%
     Distances of best-rated or proposed points from goal configurations.
     Each line represents one participant working with one algorithm.
-    For each pair of plots ((a) and (b)),
+    For each pair of plots,
     Bayesian optimization is shown on the top, and 
-    Nelder-Mead is shown on the bottom.
+    Nelder-Mead on the bottom.
   }
 \end{figure}
 
 When we observe the paths of points provided by each of the algorithms, we see differing approaches in the points proposed.
 In its current form, participants using BO clearly covered more of the parameter space (see Figure~\ref{fig:coverage}).
-For NM, it appears that vertices were gradually pulled in toward the some center where the simplex converged.
+For NM, it appears that vertices were gradually pulled in toward some center where the simplex converged.
 In fact, this motion looks mostly planar.
 BO, in comparison, appears almost like random sampling.
 This may be in part due to our particular choice of kernel $\sigma$ and noise standard deviation $\sigma_{noise}$.

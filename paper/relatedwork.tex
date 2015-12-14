@@ -1,20 +1,20 @@
 \section{Related Work}
 
-\subsection{Optimization to Match User Preference}
+\subsection{Optimization to Match User Preferences}
 
-This paper focuses on algorithms that help a user find an ideal configuration with a small number of tests.
-Algorithms for this purpose have been around for a long time.
+This paper considers algorithms that help a user find an ideal configuration with a small number of tests.
+Methods to serve this purpose have been around for a long time.
 Some early attempts at this problem are in the domain of optimal experiment design~\cite{box_empirical_1987}.
 Optimal experiment design aims to reduce the number of scientific tests necessary to develop an empirical model of a phenomenon.
 Because of the high cost of experiments, techniques including steepest ascent have been proposed to help researchers rapidly converge on an input space of interest~\cite{box_empirical_1987}.
 
-However, appropriate techniques for optimizing unknown, costly objective functions have been proposed in many additional directions.
+Appropriate techniques for optimizing unknown, costly objective functions have been proposed in many additional directions.
 These include the Nelder-Mead method~\cite{nelder_simplex_1965},
 % The Nelder-Mead method searches for a maximum by querying the scores at the vertices of a simplex in the input space and adjusting these vertices in direction of maximization~\cite{nelder_simplex_1965}.
 evolutionary strategies (e.g., CMA-ES~\cite{hansen_adapting_1996}),
 Bayesian optimization~\cite{brochu_tutorial_2010},
 and reinforcement learning~\cite{sutton_reinforcement_1998}.
-Active learning, similar to optimal experiment design, aims to learn a model with a small number of samples~\cite{cohn_active_1996,settles_active_2010} .
+Active learning, similar to optimal experiment design, aims to learn a model with a small number of strategically-chosen samples~\cite{cohn_active_1996,settles_active_2010}.
 % We draw upon the principles for successful determination models from the generic techniques from the body of literature on active learning~\cite{cohn_active_1996,settles_active_2010}.
 
 % An overarching theme from this body of work I use to frame the results is ``exploration'' vs.\ ``exploitation''~\cite{sutton_reinforcement_1998}.
@@ -34,18 +34,18 @@ Rather than focusing on performance in this paper, we focus on human perception 
 \subsection{Interactive Fabrication}
 
 User activities in this paper focus on fabrication machines.
-This is due to the progressively lower cost of these machines, and predictions that they will increasingly become home appliances.
+This is due to the progressively lower cost of these machines, and predictions that they may someday become home and workshop appliances.
 A body of peripherally related work has focused on improving peoples' ability to express their design intentions with fabrication machines.
-In these works, the machine collects a user's intent based on models and sketches they provide and modify a workpiece as a result.
+In these works, the machine collects a user's intent based on models and sketches they provide and modifies a workpiece as a result.
 
 FreeD~\cite{zoran_human-computer_2013,zoran_hybrid_2014} is a semi-autonomous tool for carving shapes in 3D.
-A user provides a 3D model to the machine as their goal.
+A user provides a virtual 3D model to the machine as their goal.
 As they work with an uncarved workpiece, a user makes large-scale motions.
-The milling device changes its own speed to remove more or less material, based on its position relative to the 3D model.
-The authors' take effort claim to minimize fabrication risk while allowing authentic engagement with raw material~\cite{zoran_hybrid_2014}.
+The milling device changes its own speed to remove more or less material, based on its position relative to the virtual 3D model.
+The authors' take effort to minimize fabrication risk while allowing authentic engagement with raw material~\cite{zoran_hybrid_2014}.
 \emph{Constructable}~\cite{mueller_interactive_2012} augments a laser cutter, aiming to enable interactive construction, where users interact by sketching on a workpiece with a laser pointer.
 The system observes laser pointer motions and converts them into constraint sets for actions, which it performs on the workpiece~\cite{mueller_interactive_2012,mueller_laserorigami_2013}.
-The current work, in contrast to past work, enables user to achieve some optimal goal with a workpiece, rather than enabling creative engagement with material or speeding up the expression of toolpaths.
+My work, in contrast to past work, enables user to achieve some optimal goal with a workpiece, rather than enabling creative engagement with material or speeding up the expression of toolpaths.
 
 % Other systems (e.g., ~\cite{mueller_wireprint_2014}~\cite{savage_sauron_2013}), provide mechanisms for rapidly prototyping both non-interactive and interactive workpieces.
 % This is with an intent to speed up the design process.

@@ -4,12 +4,11 @@
   \centering
   \includegraphics[width=0.4\textwidth]{figures/engravings}
   \caption{%
-    The letter `O' engraved into a piece of particle board laser cutter.
+    The letter `O' engraved into a piece of particle board with a laser cutting machine.
     Each `O' is engraved with a different configuration.
     Each of the five cells was engraved with a different PPI (`pulse per inch')
     In each cell, the laser's speed grows along the x-axis, and power along the y-axis.
-    If a user wants control over appearance of an engraving, they need to express these parameters with a slider-based interface.
-    Holes (the black circles) occur when the laser cuts all the way through the material, and the `O' falls through.
+    If a user wants fine-grained control over appearance, they need to express these parameters with a slider-based interface.
   }\label{fig:engravings}
 \end{figure}
 
@@ -21,14 +20,14 @@ To achieve their subjective preferences in unfamiliar circumstances, users will 
 
 Today's interfaces are not well-equipped to help users who are seeking to configure these machines for the first time.
 One challenge is that users are reluctant to read documentation on how to use technologies.
-However, it is well established that software users don't read detailed documentation~\cite{carroll_nurnberg_1990}.
+It is well established that software users don't read detailed documentation~\cite{carroll_nurnberg_1990}.
 Another problem is that these machines have unfamiliar conceptual models (see Norman's definition~\cite{norman_design_2002}).
 It is hard for users to conceptualize the impact that parameters like laser power, speed, and ``PPI'' will have on a workpiece (see Figure~\ref{fig:engravings}).
 
-This paper adapts two algorithms to the problem of helping a user explore a parameter space to achieve their subjective preferences.
-It reports on user perceptions on the trustworthiness, randomness, and accuracy of the three methods.
-This is the first step in a systematic evaluation of algorithms applicable to this problem. 
-It focuses on the output of a laser cutter, a fabrication machine some scholars envision as being part of the home in the future.
+This paper adapts two algorithms to help a user explore a parameter space to achieve their subjective preferences.
+It reports on user perceptions of trustworthiness, randomness, and accuracy of the methods.
+This is the first step in a systematic evaluation of algorithms for this problem. 
+It focuses on the output of a laser cutter, a fabrication machine some scholars envision as being part of the home workshop of the future.
 
 \if 0
 To frame this problem in a way I could test it, I engraved this O with a bunch of different settings.
@@ -46,7 +45,8 @@ Both algorithms take \emph{comparisons} of configurations as input.
 To justify this, I refer to a discussion from~\cite{brochu_tutorial_2010}.
 Human evaluation of single choices can be unreliable due to drift and anchoring.
 In addition, research in psychology~\cite{tversky_advances_1992} and economics~\cite{kingsley_preference_2006} has established human models of choice, and explored phenomena such as preference refinement.
-This work suggests that humans quite capable of producing good comparisons, and for future study, provides a lens from which to evaluate the cost of providing input to each algorithm.
+This past work suggests humans are capable of producing good comparisons.
+For future work, it provides a lens for evaluating the cost of providing comparison-based inputs to algorithms.
 
 \if 0
 Each configuration will comprise laser power, speed, frequency, and resolution.
