@@ -5,6 +5,15 @@ Here, I provide a brief introduction to each of the algorithms.
 I describe the steps taken to modify the algorithms to accept comparisons as input to drive optimization.
 I also describe how bounds are enforced for each one, the initial points of each algorithm, and the hyperparameters used.
 
+The input space for each algorithm was a discretized logarithm scale for each of three dimensions: the laser cutter's settings for power, speed, and PPI\@.
+Power and speed ranged from 1--100\%.
+Possible values for these two dimensions were:
+$\left[1\%, 3\%, 10\%, 32\%, 100\%\right]$.
+PPI ranged within 10--1000, with possible values.
+$\left[10, 32, 100, 316, 1000\right]$.
+In the space below, configurations are described as a three-tuple:
+$\left(Power, Speed, PPI\right)$.
+
 \subsection{Nelder-Mead Optimization}
 
 Nelder-Mead is an optimization method that iteratively moves vertices of a simplex in the direction of towards the best-rated vertex~\cite{nelder_simplex_1965}.
@@ -16,6 +25,18 @@ and a reduction coefficient of 1/2.
 
 To perform Nelder-Mead optimization, the algorithm doesn't need to know an exact evaluation for each vertex.
 It only needs to know the best, second-to-worst, and worst points out of each set of vertices.
+
+Initially, the vertices were:
+(1\%, 1\%, 10),
+(1\%, 1\%, 1000),
+(1\%, 100\%, 10),
+(100\%, 1\%, 10),
+These points were chosen for two reasons.
+First, at least four points are needed to migrate to all possible points in 3D space.
+(With any three points, all three and their centroid would reside on a single plane.
+Any reflection, expansion, contraction computed as a transformation of a difference vector on that plane yields another point on that plane.)
+Second, it was clear from viewing this collection of points that extremes of appearance were shown.
+For example, one image consisted of very sparse dots, another of very light lines, and another showed dark, thick lines.
 
 \subsection{Bayesian Optimization}
 
@@ -32,15 +53,18 @@ $f(x^+)$ is highest value seen so far;
 $\sigma(x)$ is the standard deviation at $x$.
 $\phi(Z)$ and $\Phi(Z)$ are the probability and cumulative density functions for $Z$.
 
-\if 0
-With this Gaussian process, it predicts the values of a new points.
-These points are predicted based on some kernel---
-usually the nearest points in an input space are most critical in determining the prediction for a new point.
-Based on the observations it has collected so far, Bayesian Optimization produces a Gaussian process that will predict the output for new data points.
-\fi
-
 Brochu et al.~\cite{brochu_tutorial_2010}~\cite{brochu_active_2008} propose a variant on Bayesian optimization that takes comparisons between sampled points as inputs.
 I implement this algorithm for this study.
 I used a squared exponential kernel with $\sigma = 0.25$.
-In performing Newton-Rhapson optimization according to Brochu et al.'s formulation, $\sigma_{noise}$ was set to 10.
-These parameters were chosen based on what appeared to enable convergence in the target 3D input space for this study.
+In performing Newton-Rhapson optimization according to Brochu et al.'s formulation, $\sigma_{noise}$ was set to 10, and ten iterations were performed to optimize the Gaussian process.
+These parameters were chosen by trial and error, observing what appeared to enable convergence in the target 3D input space for this study.
+Caching and limited iterations were implemented to ensure the algorithm would update to reflect user input in around one second, even after twenty comparisons had been given.
+
+The algorithm was seeded with one comparison:
+(3\%, 3\%, 32) and
+(32\%, 32\%, 316).
+These two points were chosen to cover two distinct ends of the input space with distinct appearances.
+
+In addition to the static bounds, the algorithm was restricted to select examples where the material had not burned during cutting.
+`O's that had fallen out of the material, or incomplete jobs that were aborted due to flames, could not be chosen by the acquisition function.
+I expected that users viewing these samples would be confused as to why the jobs weren't complete and provide comparisons that did not fit nicely to a smooth model of user preference based on the input space.

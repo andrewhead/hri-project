@@ -1,34 +1,25 @@
 \section{Experiment}
 
-\subsection{Mechanical Turk Study of Algorithms and Interfaces}
-
 I recruited 28 participants on Mechanical Turk.
-To make the design simple, this was a between-subjects design.
+We accepted workers for whom 95\% of past tasks were approved.
+The design was between-subjects design.
+Each participant was assigned either the Nelder-Mead interface or the Bayesian optimization interface, and to one of two goal configurations.
+They were shown an image of an engraved `O' produced with the ``goal'' configuration (see Figure~\ref{fig:interfaces}).
+They were asked to rank the images based on their closeness to the goal.
 
-Participants viewed a set of instructions.
-They were shown an image of an engraving produced with a ``goal'' configuration.
-They were also provided with two or more images of engravings with points chosen by the algorithm.
-Participants were asked to rank the images based on their closeness to the goal.
+They completed the activity when they had either submitted 20 rankings, or had marked the goal configuration as the best.
+I chose 20 rankings for three reasons.
+First, it appeared reasonable from personal testing that participants could achieve an image close to the provided goals with the initial points chosen with that many rankings, with both interfaces.
+Second, the Nelder-Mead method seemed to converge to a set of very similar examples before reaching the 20th iteration.
+I wanted to avoid participant attrition when they felt like the algorithm was no longer responding to their rankings.
+Third, I needed to impose a limit on the number of rankings a participant submitted to let them finish the task an claim their compensation in a reasonable amount of time.
 
-After twenty iterations, each participant was provided with a questionnaire.
-I chose twenty iterations for two reasons.
-First, from testing, it appeared reasonable that participants could achieve an image close to their goal in this number of iterations.
-Second, it was evident for the Nelder-Mead method that the algorithm converged to a set of very similar examples before the twentieth iteration.
-I wanted to avoid participants feeling that the algorithm had become ``stupid'' by continuing to provide what looked like the same examples time and again.
-Third, it was necessary to put some limit on the number of rankings that participants gave to ensure that they would finish the task in a reasonable amount of time.
-This was to respect the Mechanical Turk workers.
+Participants were not allowed to end their participation by just reporting that they had reached the goal configuration---
+the goal configuration actually had to be presented to them by the algorithm, and they had to report it as the best one.
+This was to prevent participants from falsely reporting having achieved the goal in order to claim early compensation.
+Each participants were paid \$1.00 for this HIT\@.
 
-Participants could complete the study before the very end if they ranked best an image that was exactly the same as the goal image.
-This was to enable participants to communicate to the algorithm that they were finished.
-I chose to implement this as the ending condition.
-One alternate ending condition would be to have participants report that they had found an image that they felt was very similar to the goal, e.g., through a button click.
-To avoid false reports of finishing the optimization task, I chose to forego this option.
-
-Participants were paid \$1.00 for their participation.
-Average participation time was~\andrew{insert time here}.
-
-In the questionnaire, participants were asked to rate their agreement with six statements.
-Their agreement was recorded using a 5-point Likert scale.
+In the questionnaire, participants were rated their agreement with six statements on a 5-point Likert scale:
 \begin{itemize}[noitemsep]
 \item I trusted that the algorithm would show me better images in each round.
 \item I don't understand why the algorithm chose the examples it did.
@@ -37,70 +28,7 @@ Their agreement was recorded using a 5-point Likert scale.
 \item The algorithm's guesses got better over time.
 \item The algorithm made random choices about what to show me.
 \end{itemize}
-These statements were based on Hoffman's recommended metrics for evaluating robot fluency~\cite{hoffman_evaluating_2013}.
-Although I was not evaluating fluency specifically, I was interested in assessing participants' perceptions of each algorithm's contribution to solving the problem, how much they trusted the robot to help them achieve the goal, and satisfaction with the final result.
-Order of the questions on the questionnaire was not randomized, but should be in future iterations of this study.
-
-\subsubsection{Algorithm preparation}
-
-For Nelder-Mead, the initial points of the vertices were:
-(1\%, 1\%, 10),
-(1\%, 1\%, 1000),
-(1\%, 100\%, 10),
-(100\%, 1\%, 10),
-Each point is expressed as a tuple of (\emph{Power}, \emph{Speed}, \emph{PPI}).
-These initial points were chosen for two reasons.
-First, at least four points are needed to enable the simplex to move anywhere within three-dimensional space.
-With any three points, all three and their centroid would reside on a single plane.
-Consequently, any reflection, expansion, contraction or reduction generated as a linear combination of vectors on that plane would yield yet another point on that plane.
-\andrew{Is the previous assertion actually true?}
-Second, it was obvious from viewing this collection of points that extremes of appearance were shown.
-For example, one image consisted of very sparse dots, another of very light lines, and another of very dark, thick lines.
-% See Figure~\ref{fig:initial_points} for the initial images shown to participants.
-
-Both algorithms were bounded.
-Power and speed could only have values in the range 1--100\%.
-PPI could have values in the range 10--1000.
-These were the parameter ranges available on the laser cutter I was using.
-On this laser cutter, a power of 0\% was also possible.
-However, with no power, no engraving was made.
-So I required the range of possible powers to be greater than 1\%.
-
-Bayesian optimization was seeded with one comparison:
-(3\%, 3\%, 32) and
-(32\%, 32\%, 316).
-These two points covered a large amount of the initial input space and very visually distinct.
-The algorithm was restricted to select images only where the material had not burned during cutting.
-These images showed incomplete `O's as the cutter was stopped before completing the job.
-These jobs were stopped to prevent flame from combustion of the material from damaging the cutter.
-The reason the algorithm was required to show only complete `O's was to prevent participants from believing that uncut `O's were simply very faint tracings.
-Newton-Rhapson optimization occurred in ten iterations.
-This number of iterations and algorithm caching was implemented so that the algorithm would return a new example to a participant within about one second, even when twenty points were provided.
-
-\subsubsection{Measures}
-
-Participants were shown sets of images.
-For each one, they were asked to rank the images.
-For Bayesian Optimization, they were provided with a pair of points and asked to pick the better of the two.
-The algorithm would then pick the example with the highest expected improvement, and show that next to the one whose rating was highest for the latent model derived so far.
-For Nelder-Mead, 
-
-
-\subsection{Limitations}
-
-Our simplex system optimizes on a logarithmic scale.
-The frontend we provide for setting parameters asks users to input parameters on a linear scale.
-With the simplex, we encode our personal observations and domain knowledge (that more diversity of space can be covered on a log scale).
-However, one purpose of this work is to discover generic optimization methods for finding optimal user preferences.
-So, we violate this purpose by incorporating this domain understanding of lognormal scales.
-
-Participants were forced to stop working with the algorithm after twenty iterations.
-It's likely that the Bayesian Optimization algorithm would have seemed less and less random over time, after these first twenty iterations.
-
-Images were chosen such that the goal could be achieved with some combination of rankings.
-Future studies should consider providing a random point in the input space instead of pre-selected examples.
-
-I found that many of the participants in the Bayesian optimization condition achieved exactly the goal after only six ratings.
-This weakens any claim I could make about whether Bayesian optimization is inherently better at providing final images participants consider very close to the final goal.
-With other stimuli, participants may not have achieved an image that was coincident with the goal.
-\andrew{See if it's precisely these users who rated their final images as having achieved the goal.}
+These statements were chosen to capture participants' feelings of the algorithms randomness, trustworthiness and success in attaining a goal, and change in behavior over time.
+They were based on Hoffman's recommended metrics for evaluating robot fluency~\cite{hoffman_evaluating_2013}.
+Although I was not evaluating fluency, I was interested in assessing perceptions of an algorithm's contribution, trust, and satisfaction, for which Hoffman provided initial ideas.
+The order of the questions was not randomized, but it should be in future versions of this study.

@@ -1,46 +1,10 @@
 \section{Results}
 
-When discussing the results, I refer to the algorithm-interface pairs with acronyms for brevity:
-NM (Nelder-Mead),
-BO (Bayesian Optimization).
+When discussing results, I refer to conditions with acronyms NM for Nelder-Mead, and BO for Bayesian optimization.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.45\textwidth]{figures/scatters}
-  \caption{%
-    Coverage of the parameter space by each method.  
-    An exemplar of each group is shown on the left. 
-    The top row is Bayesian Optimization, and the bottom row is Nelder-Mead.
-    Small multiples of the points for all participants are shown to the right of the enlarged images.
-    To show the procession of points, the first point a user proposes is white, and the last one black.
-    Each new point proposed by the algorithm fades gradually through grey to black.
-    The Nelder-Mead method appears to pull in its vertices linearly.
-    Bayesian Optimization, however, appears to randomly jump over the larger space.
-    \andrew{Probably break up this image into two columns, across the top of the page.}
-  }\label{fig:coverage}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.4\textwidth]{figures/feedback}
-  \caption{%
-    Qualitative feedback
-  }\label{fig:feedback}
-\end{figure}
-
-Let's talk about parameter space coverage.
-The first points sampled are white, and they fade to black as you get more samples.
-On the left is a typical participant's exploration of the space with BO---it's all over the place, but looks like it heads towards the left side.
-\andrew{Look up how to assess and compare Likert scale data.
-The current analysis just isn't comprehensive enough.}
-\andrew{The values of parameter space coverage are\ldots{}}
-
-Each line represents the new points that were proposed to each participant, and its height is the distance of that point from the goal.
-If we're just looking at the new points that each one proposes, BO is all over the map.
-But for NM, these distances started high, and usually ended up getting closer and closer to the goal.
-But these are just new points.
-Which one got the participant's favorite point closer to the goal, faster?
-\andrew{The average distances over time for each algorithm are\ldots{}}
+First, which algorithm was better able to help participants achieve their goals?
+In the BO condition, participants' best-rated configurations were much closer to their goal than in the NM condition (see Figure~\ref{fig:bestfits}),
+By looking at longitudinal data (Figure~\ref{fig:best_distances}), it appears that by iteration 10, participants in the BO condition were, in general, closer to their goal than participants in the NM condition.
 
 \begin{figure}
   \centering
@@ -50,14 +14,83 @@ Which one got the participant's favorite point closer to the goal, faster?
   \begin{subfigure}[b]{0.23\textwidth}
     \includegraphics[width=\textwidth]{figures/bestfits_bo}
   \end{subfigure}
-  \caption{Best fits for Nelder-Mead~\andrew{Increase the text size.}}\label{fig:bestfits}
+  \caption{Best fits for Nelder-Mead}\label{fig:bestfits}
 \end{figure}
 
-If we just look at the end points (Figure~\ref{fig:bestfits}).
-BO got users closer to their intended goal more frequently than the NM method.
-Part of this may have been due to the sample points chosen.
-And at the same time, some configurations that look very similar are actually very far apart in the parameter space.
-This is all something I'll have to sort out in a follow-up study.
+\begin{figure}
+\centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{figures/best_distances}
+    \caption{%
+      With each successive ranking, the distance of a participant's best-rated point from the goal configuration.
+    }\label{fig:best_distances}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{figures/point_distances}
+    \caption{%
+      The distance of each new point an algorithm proposes from the goal configuration.
+    }\label{fig:point_distances}
+  \end{subfigure}
+  \caption{%
+    Distances of best-rated or proposed points from goal configurations.
+    Each line represents one participant working with one algorithm.
+    For each pair of plots ((a) and (b)),
+    Bayesian optimization is shown on the top, and 
+    Nelder-Mead is shown on the bottom.
+  }
+\end{figure}
 
-Participants were more likely to say that the Bayesian Optimization felt random, but also more adamant that they one they marked as best was very close to the goal.
-While the simplex seemed more likely to improve, it was also more likely to get stuck.
+When we observe the paths of points provided by each of the algorithms, we see differing approaches in the points proposed.
+In its current form, participants using BO clearly covered more of the parameter space (see Figure~\ref{fig:coverage}).
+For NM, it appears that vertices were gradually pulled in toward the some center where the simplex converged.
+In fact, this motion looks mostly planar.
+BO, in comparison, appears almost like random sampling.
+This may be in part due to our particular choice of kernel $\sigma$ and noise standard deviation $\sigma_{noise}$.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.48\textwidth]{figures/scatters}
+  \caption{%
+    The points that each algorithm proposed.
+    The first three rows show participants using Bayesian optimization.
+    The bottom three rows show participants using Nelder-Mead.
+    An enlarged exemplar for each method is shown to the left of the small multiples.
+    The first point an algorithm proposes is shown in white;
+    Each new point is more grey than the last, until the final point is black.
+  }\label{fig:coverage}
+\end{figure}
+
+When we consider the distance of each of the proposed points from the goal, we see why BO outperformed NM\@.
+Figure~\ref{fig:point_distances} shows how the distance of the latest point proposed changes over time for each algorithm.
+After about the tenth point sampled, it appears as if Nelder-Mead no longer suggests new examples radically farther from the goal.
+This may be an indication of NM prematurely converging to a local maximum.
+BO, on the other hand, continues to suggest points both near and far from the goal, and does not appear to converge at all.
+
+Participants perceived these differences in how the algorithms worked (see Figure~\ref{fig:feedback}).
+Those in the BO condition were more likely to report that the algorithm's choice of points seemed random.
+But these participants were also more likely to claim that the point they marked as the best was very close to the goal.
+Participants working with NM more often reported that the algorithm seemed to improve over time.
+However, it also seemed more likely to get stuck.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figures/feedback}
+  \caption{%
+    Participant responses to questions about their perception of each algorithm.
+    Blue bars show participants in the Bayesian optimization condition.
+    Orange bars show participants in the Nelder-Mead condition.
+  }\label{fig:feedback}
+\end{figure}
+
+\subsection{Limitations}
+
+Participants were forced to stop after reporting 20 rankings to the algorithm.
+I expect that that the Bayesian optimization algorithm would have seemed less random over time.
+The choice of hyperparameters for NM and BO might impact user perceptions of randomness and the best point a participant finds after 20 rankings.
+Before drawing any conclusions about these algorithms, a wider, systematically-determined range of hyperparameters must be tested.
+
+Many of the participants in the BO condition achieved exactly the goal after only a few rankings (see Figure~\ref{fig:coverage}).
+It's likely that one of the goals was ``just right'' for participants in the BO condition to discover precisely the right condition after only a few comparisons.
+This suggests that this one goal was better suited to BO than NM for these tests, and weakens any potential claims about inherent strengths of BO at finding configurations close to the goal.
+To counter this side effect and improve generalizability, a larger number of goal images should be tested.
+Better yet, goal images could be randomly selected from the domain of the input space.
